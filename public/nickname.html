@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div style="text-align: center;">
+        <h1>Choose a nickname </h1>
+    </div>
+
+    <div style="text-align: center;">
+        <form id="nickname-form">
+            <input type="text" name="nickname">
+            <button type="submit" id="nickname-submit">Submit</button>
+        </form>
+    </div>
+
+</body>
+<script>
+    const button = document.getElementById('nickname-submit');
+    const form = document.getElementById('nickname-form');
+    form.addEventListener('submit', () => {
+        event.preventDefault();
+        const nickname = document.querySelector('input[type="text"]').value;
+        fetch('/submit/createPerson', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nickname: nickname
+            })
+
+        });
+        window.location.href = '/gender';
+        // location.reload();
+    });
+</script>
+</html>
