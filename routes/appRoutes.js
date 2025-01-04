@@ -16,7 +16,7 @@ router.get('/invite', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'nickname.html'));
+    res.sendFile(path.join(__dirname, '../public', 'new.html'));
 });
 
 router.get('/home', (req, res) => {

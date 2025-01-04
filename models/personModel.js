@@ -4,8 +4,11 @@ const personSchema = new mongoose.Schema({
     nickname: {
         type: String,
         required: false,
+        unique: true
     },
     gender: {
+        // todo, make this an array
+        // of male, female, queer
         type: String,
         required: false,
     },
@@ -18,6 +21,10 @@ const personSchema = new mongoose.Schema({
         ref: 'Person',
         required: false,
     },
+    inviteApproval: {
+        type: Boolean, 
+        required: false
+    }
 });
 
 module.exports = mongoose.model('Person', personSchema);

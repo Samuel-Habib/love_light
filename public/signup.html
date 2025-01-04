@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        // Callback function for handling sign-in
+        function handleCredentialResponse(response) {
+            console.log("Encoded JWT ID token: " + response.credential);
+            // Here, you can send the token to your server for validation
+            fetch("http://localhost:3000/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: response.credential })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Server Response:", data);
+                window.location.href = "/nickname.html"; // Navigate after fetch completes
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Sign Up Page</h1>
+
+    <!-- Google Sign-In Button -->
+    <div id="g_id_onload"
+        data-client_id="1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-login_uri="http://localhost:3000/auth/login"
+        data-callback="handleCredentialResponse">
+    </div>
+    <div class="g_id_signin" data-type="standard"></div>
+
+</body>
+</html>

@@ -1,11 +1,13 @@
+require('dotenv').config();
 const express = require('express');
 const connectDB = require('./config/db');
 const personRoutes = require('./routes/personRoutes').router;
 const appRoutes = require('./routes/appRoutes').router;
-const Person = require('./models/personModel');
-require('dotenv').config();
+const loginRoutes = require('./routes/loginRoutes')
 const path = require('path');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 
 app.use(express.json());
 
@@ -16,21 +18,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public', 'css')));
 app.use(express.static(path.join(__dirname, 'public', 'js')));
 
-app.use(personRoutes);
 
-app.post('/submit/createPerson', async (req, res) => {
-    try {
-        const person = new Person(req.body);
-        person.nickname = req.body.nickname;
-        await person.save();
-        res.status(201).json(person)
-    } catch (error) {
-        console.error(`Error: ${error.message}`);
-        res.status(500).send('Server Error');
-    }
+app.use(personRoutes);
+app.use(appRoutes);
+app.use('/auth', loginRoutes)
+
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; img-src 'self';"
+    );
+    next();
 });
 
-app.use(appRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
