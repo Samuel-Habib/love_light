@@ -7,8 +7,7 @@ const personSchema = new mongoose.Schema({
         unique: true
     },
     gender: {
-        // todo, make this an array
-        // of male, female, queer
+        // male, female, queer
         type: String,
         required: false,
     },
@@ -23,6 +22,10 @@ const personSchema = new mongoose.Schema({
     },
     inviteApproval: {
         type: Boolean, 
+        required: false
+    },
+    email: {
+        type: String,
         required: false
     }
 });

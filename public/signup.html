@@ -6,9 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up Page</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
-    <script>
+    <script >
         // Callback function for handling sign-in
         function handleCredentialResponse(response) {
+            function setCookie(name,value,days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }
             console.log("Encoded JWT ID token: " + response.credential);
             // Here, you can send the token to your server for validation
             fetch("http://localhost:3000/auth/login", {
@@ -18,8 +38,21 @@
             })
             .then(res => res.json())
             .then(data => {
+                console.log("Server Response:", data.user.email);
                 console.log("Server Response:", data);
-                window.location.href = "/nickname.html"; // Navigate after fetch completes
+                setCookie("email", data.user.email)
+                const nickname = getCookie("nickname")
+                console.log(getCookie("email") + "cookie")   
+                fetch(`/person/${nickname}/email`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        nickname: nickname, 
+                        email: data.user.email
+                    })
+                })
+
+                window.location.href = "/partnerInvite.html"; // Navigate after fetch completes
             })
             .catch(error => console.error("Error:", error));
         }

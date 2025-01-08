@@ -13,18 +13,81 @@
     </div>
 
     <div style="text-align: center;">
-        <input type="text" placeholder="nickname or email">
-        <button>Submit</button>
+        <form id="partner-form">
+            <input id="inviter" type="text" placeholder="nickname or email">
+            <button>Submit</button>
+        </form>
     </div>
     <div style="text-align: center;">
         <h1> OR accept your invite with an invite code</h1>
-        <input type="text">
-        <button>Submit</button>
+        <form id="invite-form">
+            <input type="text" id="inviteCode">
+            <button>Submit</button>
+        </form>
     </div>
     <div style="text-align: center;">
         <button id="later" onclick="window.location.href = '/home.html' "> Add Later </button>
     </div>
 
-
 </body>
+<script>
+    function setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+
+    const partner = document.getElementById("partner-form")
+    const invite = document.getElementById("invite-form")
+    partner.addEventListener("submit", (event) =>{
+        event.preventDefault()
+        // if it's a nickname, we have to check if it's a valid nickname and get the associated
+        // email with that nicknmae
+        // if it's an email we just have to call the resend api
+        // also here is where the welcome email would also be sent
+        const invterEmail = document.getElementById("inviter").value
+        console.log(typeof(invterEmail))
+        const clientNickname = getCookie("nickname")
+        // fetch nickname by email
+        // fetch email by nickname
+        
+        fetch('/resend/sendInvite', {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json"
+            }, 
+            body: JSON.stringify({
+                email: invterEmail,
+                nickname: `${clientNickname}'s partner`
+            }) 
+        })
+        
+        fetch('/resend/sendOnboarding', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: getCookie("email"),
+                nickname: clientNickname 
+            })
+        })
+    })
+</script>
 </html>

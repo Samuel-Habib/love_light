@@ -16,6 +16,7 @@
     "google-auth-library": "^9.15.0",
     "js-cookie": "^3.0.5",
     "lfs": "^0.0.4",
-    "mongoose": "^8.8.1"
+    "mongoose": "^8.8.1",
+    "resend": "^4.0.1"
   }
 }
