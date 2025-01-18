@@ -160,7 +160,58 @@ const getStatus = async (req, res) =>{
     }
 }
 
+const putApprovalByNickname = async (req, reqs) =>{
+    try{
+        // note this is find by id
+        const person = await personModel.findOneAndUpdate(
+            { nickname: req.params.nickname },
+            { $set: { email: req.body.email } },
+            { new: true, upsert: false }
+        );
+        if(!person){
+            return res.status(404).json({msg: 'Status not found'});
+        } else{ res.json(status); }
+    }
+    catch(error){
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+    }
+}
 
+const putPersonWithInviteCode = async (req, res) => {
+    try {
+        const partnerInviteCodeDoc = await personModel.findOne({ inviteCode: req.body.inviteCode });
+
+        if (partnerInviteCodeDoc) {
+            const person = await personModel.findOneAndUpdate(
+                { nickname: req.body.nickname },
+                { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true } }
+            );
+            const otherPerson = await personModel.findOneAndUpdate(
+                { _id: person.partner instanceof mongoose.Types.ObjectId ? person.partner : mongoose.Types.ObjectId(person.partner) },
+                { $set: { partner: person._id, inviteApproval: true } },
+                { new: true, upsert: false }
+            );
+
+            if (!otherPerson) {
+                console.log("No matching document found for partner");
+            } else {
+                console.log(otherPerson, "Updated other person document");
+            }
+
+            if (!person) {
+                return res.status(404).json({ message: "Person not found" });
+            } else {
+                return res.status(200).json({ message: "Person found and updated" });
+            }
+        } else {
+            return res.status(404).json({ message: "Invite document not found" });
+        }
+    } catch (error) {
+        console.error(error, "Error during putPersonWithInviteCode");
+        res.status(500).json({ message: "Internal server error", error });
+    }
+};
 
 module.exports = { 
     getPersons,
@@ -171,5 +222,6 @@ module.exports = {
     putGenderByNickname,
     putPartnerByNickname,
     putEmail,
-    getPersonByAny
+    getPersonByAny,
+    putPersonWithInviteCode
 };

@@ -8,6 +8,11 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script >
         // Callback function for handling sign-in
+        const idConfig = {
+            client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
+            callback: handleCredentialResponse,
+            use_fedcm_for_prompt: true
+        };
         function handleCredentialResponse(response) {
             function setCookie(name,value,days) {
                 var expires = "";
@@ -30,7 +35,7 @@
                 return null;
             }
             console.log("Encoded JWT ID token: " + response.credential);
-            // Here, you can send the token to your server for validation
+            // send the token to server for validation
             fetch("http://localhost:3000/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -67,7 +72,8 @@
         data-context="signin"
         data-ux_mode="popup"
         data-login_uri="http://localhost:3000/auth/login"
-        data-callback="handleCredentialResponse">
+        data-callback="handleCredentialResponse"
+        data-use_fedcm_for_prompt="true">
     </div>
     <div class="g_id_signin" data-type="standard"></div>
 

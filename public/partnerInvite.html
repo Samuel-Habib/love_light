@@ -13,15 +13,15 @@
     </div>
 
     <div style="text-align: center;">
-        <form id="partner-form">
+        <form id="partner-invite">
             <input id="inviter" type="text" placeholder="nickname or email">
             <button>Submit</button>
         </form>
     </div>
     <div style="text-align: center;">
         <h1> OR accept your invite with an invite code</h1>
-        <form id="invite-form">
-            <input type="text" id="inviteCode">
+        <form id="accept-invite-form">
+            <input type="text" id="inviteCode" type="submit" name="inviteCode">
             <button>Submit</button>
         </form>
     </div>
@@ -52,9 +52,9 @@
         return null;
     }
 
-
-    const partner = document.getElementById("partner-form")
-    const invite = document.getElementById("invite-form")
+    const clientNickname = getCookie("nickname")
+    const partner = document.getElementById("partner-invite")
+    const invite = document.getElementById("accept-invite-form")
     partner.addEventListener("submit", (event) =>{
         event.preventDefault()
         // if it's a nickname, we have to check if it's a valid nickname and get the associated
@@ -63,7 +63,6 @@
         // also here is where the welcome email would also be sent
         const invterEmail = document.getElementById("inviter").value
         console.log(typeof(invterEmail))
-        const clientNickname = getCookie("nickname")
         // fetch nickname by email
         // fetch email by nickname
         
@@ -74,7 +73,10 @@
             }, 
             body: JSON.stringify({
                 email: invterEmail,
-                nickname: `${clientNickname}'s partner`
+                // nickname: `${clientNickname}'s partner`
+                nickname: `${clientNickname}`
+                // fix it so it says clientNickname's partner 
+                // in the templalate <<<
             }) 
         })
         
@@ -89,5 +91,38 @@
             })
         })
     })
+
+    // ------ sepeate form --------
+
+
+    
+
+    invite.addEventListener("submit", (event) => {
+        event.preventDefault(); 
+        
+        const formData = new FormData(event.target); 
+        const inviteCode = formData.get('inviteCode'); 
+        console.log(inviteCode, "invite code")
+        console.log(clientNickname, "client nickanme")
+
+        // Perform the fetch request with the data
+        fetch('/person/inviteCodeEntry', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                nickname: `${clientNickname}`,
+                inviteCode: `${inviteCode}`
+            })
+        })
+        .then(response => {
+            console.log(response.status, "response status")
+        })
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error)); 
+
+    });
+    
 </script>
 </html>

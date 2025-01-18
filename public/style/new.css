@@ -1,0 +1,15 @@
+
+
+#big-text-div {
+    background-color: blue;
+
+}
+
+#big-text{
+    background-color: red;   
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Montserrat", serif;
+    font-weight: bold;
+}
