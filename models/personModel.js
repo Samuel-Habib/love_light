@@ -14,6 +14,7 @@ const personSchema = new mongoose.Schema({
     status: {
         type: Number,
         required: false,
+        default: 0
     },
     partner: {
         type: mongoose.Schema.Types.ObjectId,
@@ -22,7 +23,8 @@ const personSchema = new mongoose.Schema({
     },
     inviteApproval: {
         type: Boolean, 
-        required: false
+        required: false,
+        default: false
     },
     inviteCode: {
         type: String,

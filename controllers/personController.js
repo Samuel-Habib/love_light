@@ -122,6 +122,18 @@ const putEmail = async (req, res) => {
     }
 };
 
+const uniqueEmail = async (req, res) => {
+    try {
+        const person = await personModel.findOne({email: req.body.email})
+        if(!person){
+            return res.status(200).json({msg: 1})
+        } 
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).json({msg: 0})
+    }
+}
+
 const getPersons = async (req, res) => {
     try {
         const persons = await personModel.find();
@@ -159,6 +171,25 @@ const getStatus = async (req, res) =>{
         res.status(500).send('Server Error');
     }
 }
+
+
+const putStatusByNickname = async (req, res) =>{ 
+    try {
+        // expects a nickname from the request body
+        console.log(req.body.nickname)
+        const person = await personModel.findOneAndUpdate(
+            {nickname: req.body.nickname}, 
+            {status: req.body.status})
+        if(!person){
+            return res.status(404).json({msg: 'Status not found'});
+        } else{ res.status(200); }
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+        
+    }
+}
+
 
 const putApprovalByNickname = async (req, reqs) =>{
     try{
@@ -222,6 +253,8 @@ module.exports = {
     putGenderByNickname,
     putPartnerByNickname,
     putEmail,
+    uniqueEmail,
     getPersonByAny,
-    putPersonWithInviteCode
+    putPersonWithInviteCode,
+    putStatusByNickname,
 };

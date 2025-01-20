@@ -1,77 +1,65 @@
-// const button = document.getElementById('nickname-submit');
-// const form = document.getElementById('nickname-form');
-
-
-
-// const nickname = document.querySelector('input[type="text"]').value;
-
-// console.log(nickname + "thi sis ")
-// setCookie("nickname", nickname, 1)
-// console.log(getCookie("nickname")+ "thi sis a cookie")
-// console.log(document.getElementById("nick").value + "helloGOTYA")
-
-
-
-// form.addEventListener('submit', (event) => {
-    // event.preventDefault();
-
-    // const nickname = document.querySelector('input[type="text"]').value;
-
-    // fetch('/person', {  // Ensure URL matches backend route
-        // method: 'POST',
-        // headers: {
-            // 'Content-Type': 'application/json',
-        // },
-        // body: JSON.stringify({ nickname }),  // Send the nickname
-    // })
-        // .then((response) => {
-            // if (!response.ok) {
-                // throw new Error('Network response was not ok');
-            // }
-            // return response.json(); // Or JSON if API responds with JSON
-        // })
-        // .then((data) => {
-            // console.log('Success:', data);
-        // })
-        // .catch((error) => {
-            // console.error('Error:', error);
-        // });
-
-        // window.location.href = "/gender.html"
-// });
-
 import { getCookie, setCookie } from './Cookie.js';
-
 const form = document.getElementById('nickname-form');
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', async (event) => {
     
-    event.preventDefault(); // Prevent form from navigating to /person
+    event.preventDefault(); 
+    
+    const nickname = document.getElementById("nick").value;
+    setCookie("nickname", nickname, "1");
+    console.log(getCookie("nickname")+ "MY COOKIE");
+    
+    try {
+        const response = await fetch('/person', {  
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ nickname }),  
+        });
 
-    const nickname = document.getElementById("nick").value
-    setCookie("nickname", nickname, "1")
-    console.log(getCookie("nickname")+ "MY COOKIE")
-    
-    // Send the nickname to the server using fetch
-    fetch('/person', {  
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ nickname }),  
-    })
-    .then((response) => {
         if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.text(); // Change this if your backend returns JSON
-    })
-    .then((data) => {
-        console.log('Success:', data);
+        const responseData = await response.text();
+        console.log('First request Success:', responseData);
 
-        // After the fetch request succeeds, redirect to the next page
-        window.location.href = "/gender.html";
-    })
-    .catch((error) => {
+
+        const onboardingResponse = await fetch('/resend/sendOnboarding', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: getCookie("email"),
+                nickname: nickname 
+            })
+        });
+
+        // onboardingResponse seems to casuing the page to not redirect to the next page
+
+        if (!onboardingResponse.ok) {
+            throw new Error(`Onboarding HTTP error! status: ${onboardingResponse.status}`);
+        }
+        
+        window.location.href = "./gender.html";
+        
+    } catch (error) {
         console.error('Error:', error);
-    });
+    }
+});
+
+form.addEventListener('submit', async (event) => {
+    // for now this is a workaround to allow the page to go to the next page
+    // there is some issues with the fetch request that is preventing the page from going to the next page
+    // this seems to be a promise based error
+
+    // robust error handling needs to be in place in case the nickname doesn't get saved
+    // however, because the nickname is required for gender, the user will be stuck on this page
+
+    event.preventDefault()
+
+    setTimeout(() => {
+        window.location.href = "./gender.html";
+    }, 500);
+
 });

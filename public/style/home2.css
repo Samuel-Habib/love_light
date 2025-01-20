@@ -21,7 +21,7 @@ body {
     background-color: black;
     width: 50%;
     aspect-ratio: 882 / 286;
-    border-radius: 35% / 92.5174824%;
+    border-radius: 30% / 92.5174824%;
     margin: auto;
     min-width: 882px;
     min-height: 286px;
@@ -80,15 +80,13 @@ body {
     padding: 0; /* Remove default padding */
     cursor: pointer; /* Change cursor to pointer for interactivity */
     display: inline-flex; /* Align the image inside properly */
-    border-radius: 50%; /* Optional: To make the button round */
+    border-radius: 50%; 
     overflow: hidden; /* Ensures the image stays within bounds */
 }
 
 .light-button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add a hover effect */
 }
-
-
 
 
 
@@ -100,7 +98,7 @@ body {
     background-color: rgba(133, 133, 133);
     width: 50%;
     aspect-ratio: 882 / 286;
-    border-radius: 35% / 92.5174824%;
+    border-radius: 30% / 92.5174824%;
     margin: auto;
     min-width: 882px;
     min-height: 286px;

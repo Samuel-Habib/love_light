@@ -1,5 +1,25 @@
-import { $where } from "../../models/personModel";
-import {getCookie, setCookie} from "./Cookie"
+// import { $where } from "../../models/personModel";
+export function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+export function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 
 const red = document.getElementById("red")
 const yellow = document.getElementById("yellow")
@@ -12,6 +32,9 @@ const dG = `rgb(50,108,30)`
 const dR = `rgb(129,19, 10)`
 const dY = `rgb(127,87, 11)`
 
+
+
+
 //when you first enter the page
 
 const nickname  = getCookie("nickname")
@@ -21,7 +44,7 @@ fetch('/person', {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-        nickname: $(nickname)
+        nickname: `${nickname}`
     })
 })
 .then(response => response.json())
@@ -31,71 +54,36 @@ fetch('/person', {
 // when you click
 green.addEventListener("click", (e)=>{
     e.preventDefault()
-    console.log("green has been hit")
-    // 96,217,55
-    green.style.backgroundColor= `rgb(96,217, 55)`
-    red.style.backgroundColor= `rgb(129,19, 10)`
-    yellow.style.backgroundColor= `rgb(127,87, 11)`
+    colorClick(red, green, yellow, dR, bG, dY, 3)
 
-    fetch('/', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            
-        })
-    })
-
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-    fetch('/person/green/status', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            
-        })
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
 })
+
 red.addEventListener("click", (e)=>{
     e.preventDefault()
-    console.log("red has been hit")
-    // 237,34,13
-    red.style.backgroundColor = `rgb(237,34,13)`
-    green.style.backgroundColor= `rgb(50,108,30)`
-    yellow.style.backgroundColor= `rgb(127,87, 11)`
+    colorClick(red, green, yellow, bR, dG, dY, 1)
 })
 yellow.addEventListener("click", (e)=>{
     e.preventDefault()
     console.log("yellow has been hit")
-    red.style.backgroundColor= `rgb(129,19, 10)`
-    green.style.backgroundColor= `rgb(50,108,30)`
-    // 254,174,0
-    yellow.style.backgroundColor= `rgb(254,174,0)`
+    colorClick(red, green, yellow, dR, dG, bY, 2)
 })
 
 
 function colorClick(prevR, prevG, prevY, newR, newG, newY, color)
 {
-    prevR.style.backgroundColor= newR
-    prevG.style.backgroundColor= newG
-    prevY.style.backgroundColor= newY
+    prevR.style.backgroundColor = newR
+    prevG.style.backgroundColor = newG
+    prevY.style.backgroundColor = newY
 
-    fetch(`/person/${color}/status`, {
-        method: 'POST',
+    fetch(`/person/status`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
             // pass in the nickname, and updateStatusByNickname
-            nickname: `${nickname}`
-
+            nickname: `${nickname}`,
+            status: `${color}`
         })
     })
     .then(response => response.json())

@@ -41,7 +41,7 @@ router.post('/sendInvite', async (req,res) =>{
     
     console.log(inviter)
     if(typeof(InviteCode)){
-      const invitee = new personModel({partner: inviter.id, inviteCode: InviteCode})
+      const invitee = new personModel({partner: inviter.id, inviteCode: InviteCode, email: req.body.email})
       await invitee.save();
     } else{
       console.log("not a string :/")

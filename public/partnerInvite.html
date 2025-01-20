@@ -13,9 +13,9 @@
     </div>
 
     <div style="text-align: center;">
-        <form id="partner-invite">
+        <form id="partner-invite" type="submit" "> 
             <input id="inviter" type="text" placeholder="nickname or email">
-            <button>Submit</button>
+            <button type="submit">Submit</button>
         </form>
     </div>
     <div style="text-align: center;">
@@ -26,7 +26,7 @@
         </form>
     </div>
     <div style="text-align: center;">
-        <button id="later" onclick="window.location.href = '/home.html' "> Add Later </button>
+        <button id="later" onclick="window.location.href = '/home2.html' "> Go to home </button>
     </div>
 
 </body>
@@ -66,36 +66,47 @@
         // fetch nickname by email
         // fetch email by nickname
         
-        fetch('/resend/sendInvite', {
-            method: "POST",
+
+        // check for a unique inviter email
+        // then send the invite if it is
+        // two fetch requests chained together
+
+        fetch('/person/uniqueEmail', {
+            method: 'POST', // Change to POST as the endpoint expects a body
             headers: {
-                "Content-Type" : "application/json"
-            }, 
-            body: JSON.stringify({
-                email: invterEmail,
-                // nickname: `${clientNickname}'s partner`
-                nickname: `${clientNickname}`
-                // fix it so it says clientNickname's partner 
-                // in the templalate <<<
-            }) 
-        })
-        
-        fetch('/resend/sendOnboarding', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: getCookie("email"),
-                nickname: clientNickname 
+                email: invterEmail
             })
         })
+        .then(response => response.json())
+        .then(data => {
+            if (data.msg === 1) { // Check if the response indicates success
+                return fetch('/resend/sendInvite', {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: invterEmail,
+                        nickname: `${clientNickname}'s partner`
+                    })
+                });
+            } else {
+                throw new Error('Email is not unique');
+            }
+        })
+        .then(response => response.json())
+        .then(data => console.log(data))
+        .catch(error => console.error('Error:', error));
+        
+
+
+
     })
 
     // ------ sepeate form --------
-
-
-    
 
     invite.addEventListener("submit", (event) => {
         event.preventDefault(); 

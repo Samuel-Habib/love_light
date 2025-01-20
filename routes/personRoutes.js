@@ -12,4 +12,6 @@ router.put('/person/:nickname/gender', personController.putGenderByNickname)
 router.put('/person/:nickname/partner', personController.putPartnerByNickname)
 router.put('/person/:nickname/email', personController.putEmail)
 router.put('/person/inviteCodeEntry', personController.putPersonWithInviteCode)
+router.put('/person/status', personController.putStatusByNickname)
+router.get('/person/uniqueEmail', personController.uniqueEmail)
 exports.router = router;
