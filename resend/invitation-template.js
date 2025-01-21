@@ -61,7 +61,7 @@ export const generateInviteEmail = (recipient, inviteCode) => {
             <td>
             <h1>Your Invite Code is Here!</h1>
             <p>
-                Hi ${recipient},
+                Hi ${recipient}'s partner,
             </p>
             <p>
                 We're excited to have you on board! Below is your exclusive invite code to access our platform:

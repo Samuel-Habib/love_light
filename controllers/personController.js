@@ -43,7 +43,7 @@ const putGenderByNickname = async (req, res) => {
 
 const getPersonByAny = async (req, res) => {
     try {
-        const { email, gender, nickname, objectID } = req.body;
+        const { email, gender, nickname, objectID } = req.params.any;
 
         // Check parameters one by one and return the person if found
         if (email) {
@@ -124,20 +124,35 @@ const putEmail = async (req, res) => {
 
 const uniqueEmail = async (req, res) => {
     try {
-        const person = await personModel.findOne({email: req.body.email})
-        if(!person){
-            return res.status(200).json({msg: 1})
-        } 
+        const person = await personModel.findOne({ email: req.params.email });
+        if (person) {
+            return res.status(200).json({ msg: 0 });
+        } else {
+            return res.status(404).json({ msg: 1 });
+        }
     } catch (error) {
         console.error(`Error: ${error.message}`);
-        res.status(500).json({msg: 0})
+        res.status(500).json({ msg: 0 });
     }
-}
+};
 
 const getPersons = async (req, res) => {
     try {
         const persons = await personModel.find();
         res.json(persons);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+    }
+}
+
+const getPersonByID = async (req, res) => {
+    try {
+        const person = await personModel.findById(req.params.id);
+        if (!person) {
+            return res.status(404).json({ msg: 'Person not found' });
+        }
+        res.json(person);
     } catch (error) {
         console.error(`Error: ${error.message}`);
         res.status(500).send('Server Error');
@@ -219,7 +234,7 @@ const putPersonWithInviteCode = async (req, res) => {
                 { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true } }
             );
             const otherPerson = await personModel.findOneAndUpdate(
-                { _id: person.partner instanceof mongoose.Types.ObjectId ? person.partner : mongoose.Types.ObjectId(person.partner) },
+                { _id: person.partner instanceof mongoose.Types.ObjectId ? person.partner : new mongoose.Types.ObjectId(person.partner) },
                 { $set: { partner: person._id, inviteApproval: true } },
                 { new: true, upsert: false }
             );
@@ -257,4 +272,5 @@ module.exports = {
     getPersonByAny,
     putPersonWithInviteCode,
     putStatusByNickname,
+    getPersonByID
 };

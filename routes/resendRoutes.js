@@ -38,13 +38,15 @@ router.post('/sendInvite', async (req,res) =>{
     
     const inviter = await personModel.findOne({nickname: req.body.nickname})
     console.log(req.body)
+
+    console.log(inviter.id, "this is inviter")
     
     console.log(inviter)
     if(typeof(InviteCode)){
       const invitee = new personModel({partner: inviter.id, inviteCode: InviteCode, email: req.body.email})
       await invitee.save();
     } else{
-      console.log("not a string :/")
+      console.log("not a string ")
       console.log(typeof(InviteCode))
     }
 

@@ -56,8 +56,14 @@
                         email: data.user.email
                     })
                 })
-
-                window.location.href = "/partnerInvite.html"; // Navigate after fetch completes
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Server Response:", data);
+                    setTimeout(() => {
+                        window.location.href = "/partnerInvite.html";
+                    }, 500);
+                })
+                .catch(error => console.error("Error:", error));
             })
             .catch(error => console.error("Error:", error));
         }

@@ -71,17 +71,15 @@
         // then send the invite if it is
         // two fetch requests chained together
 
-        fetch('/person/uniqueEmail', {
-            method: 'POST', // Change to POST as the endpoint expects a body
+        fetch(`/person/uniqueEmail/${invterEmail}`, {
+            method: 'GET', // Change to POST as the endpoint expects a body
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: invterEmail
-            })
+            }
         })
         .then(response => response.json())
         .then(data => {
+            console.log(data, "data")
             if (data.msg === 1) { // Check if the response indicates success
                 return fetch('/resend/sendInvite', {
                     method: "POST",
@@ -90,7 +88,7 @@
                     },
                     body: JSON.stringify({
                         email: invterEmail,
-                        nickname: `${clientNickname}'s partner`
+                        nickname: `${clientNickname}`
                     })
                 });
             } else {
