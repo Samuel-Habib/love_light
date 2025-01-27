@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public', 'home.html'));
+    res.sendFile(path.join(__dirname, '../public', 'home2.html'));
 });
 
 exports.router = router;

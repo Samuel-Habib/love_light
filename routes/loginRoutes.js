@@ -2,7 +2,7 @@ const express = require('express');
 const { OAuth2Client } = require('google-auth-library');
 
 const router = express.Router(); // Correctly initialize the router
-const CLIENT_ID = process.env.GOOGLE_LOGIN_CLIENT_ID;
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 if (!CLIENT_ID) {
     console.error('CLIENT_ID is not defined in the environment variables.');
     process.exit(1); // Exit the process if CLIENT_ID is missing

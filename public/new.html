@@ -5,19 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
     <title>Document</title>
-    <link rel="stylesheet" href="./style/new.css"
+    <link rel="stylesheet" href="./style/new.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="big-text-div">
-        <big id="big-text" style="font-size: 300px;">NEW?</big>
+        <p class="love">Love</p>
+        <p class="light">Light</p>
+    <div class="sign-buttons">
+        <div class="sign-up">
+            <div onclick="location.href='nickname.html'" > Sign up with Google </div>
+        </div>
+        <div class="sign-in">
+            <div onclick="location.href='/auth/google'" class="google-button">
+                Sign in with Google
+            </div>
+        </div>
     </div>
-    <div>
-        <button onclick="location.href='nickname.html'" > Yes </button>
-        <button onclick="location.href='login.html'"> No </button>
     </div>
+
+    <div id="traffic-light" class="traffic-light">
+        <button class="light-button">
+            <div id="red" class="red-light"></div>
+        </button>
+        <button class="light-button">
+            <div id="yellow" class="yellow-light"></div>
+        </button>
+        <button class="light-button">
+            <div id="green" class="green-light"></div>
+        </button>
+
+    
+
+
+    </div>  
+    
 </body>
 </html>
 
