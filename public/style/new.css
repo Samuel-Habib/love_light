@@ -5,52 +5,71 @@ body {
     height: 100vh;
     width: 100vw;
     display: flex;
+    flex-direction: row;
     /* justify-content: center; */
     align-items: center;
     background: rgba(206,207,214,255);
+
+    
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 }
 
 #big-text-div{
-   margin-top: -20%; 
-   margin-left: 10%;
+    position: absolute;
+    margin-right: 40%;
+    margin-top: -15%
 }
 
 .love{
-    font-size: 250px;
+    position: relative;
+    font-size: 11.65vw;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    margin-bottom: 0;
+    margin-bottom: 0vw;
+    margin-right: 10%;
 }
 
 .light{
-    font-size: 250px;
+    font-size: 11.65vw;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    text-indent: 108px;
-    margin-top: -100px;
+    text-indent: 5vw;
+    margin-top: -5vw;
+    margin-right: 10%;
 }
 
 
 /* sign in */
 
 .sign-buttons{
-    height: 50px;
+    height: 5vw;
     width: 100%;
     justify-content: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .sign-up{
-    width: 350px;
-    border-radius: 10px;
+    width: 25vw;
+    border-radius: 6vw;
     background-color: black;
     color: white;
     border: none;
-    padding: 10px 20px;
+    
+    padding: 1vw 2vw;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    margin: 4px 2px;
+    font-size: 2vw;
+    margin: 1vw 2vw;
+
     cursor: pointer;
     justify-content: center;
     align-items: center;
@@ -59,16 +78,16 @@ body {
 
 
 .sign-in{
-    width: 350px;
-    border-radius: 10px;
+    width: 25vw;
+    border-radius: 6vw;
     background-color: rgb(0, 0, 0);
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 1vw 2vw;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
-    margin: 4px 2px;
+    font-size: 2vw;
+    margin: 1vw 2vw;
     cursor: pointer;
 }
 
@@ -84,22 +103,40 @@ body {
     flex-direction: column; /* Stack lights vertically */
     justify-content: center; /* Center within the container */
     align-items: center; /* Center horizontally */
+    height: 10%;
+    width: 10%;
 }
 
 .traffic-light {
-    position: relative;
+    background-color: blue;
+    position: absolute;
+    left: 50%;
     background-color: black;
-    width: 150px;
+    width: 12vh;
     aspect-ratio: 882 / 286; /* Original aspect ratio for horizontal */
     border-radius: 30% / 92.5174824%;
     margin: auto;
-    min-width: 882px;
-    min-height: 286px;
+
+    /* factor of 3.08391608 */
+
+    /* to change size of traffic light change the min-width
+    and min-height
+    
+    **NOTE** you will also need to change the max-width 
+    and the max-height of the light containers below
+    
+    you may also need the left: XX% to center the traffic light
+    how you need it to be
+    */
+
+    min-width: 46.2587412vw;
+    min-height: 15vw;
+
     display: flex;
+    aspect-ratio: 3.2/1;
     justify-content: center;
     align-items: center;
     gap: 5%;
-    overflow: visible;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
     
     /* Rotate the entire traffic light */
@@ -107,24 +144,19 @@ body {
 }
 
 
-.traffic-light::before {
-    content: '';
-    position: absolute;
-    top: -2px; /* Adjust to control stroke thickness */
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    border-radius: inherit; /* Match traffic-light shape */
-    background: black; 
-    z-index: -1; /* Place behind the main content */
-}
 
 .red-light, .yellow-light, .green-light {
-    width: 28%;
+    width: 60vw;
     border-radius: 100%;
     aspect-ratio: 1 / 1;
-    min-width: 250px;
-    min-height: 250px;
+    min-width: 3vw;
+    min-height: 3vw;
+
+    /* factor of 0.87 compared
+    to traffic light size*/
+
+    max-width: 13.05vw;
+    max-height: 13.05vw;
 }
 
 .red-light {
@@ -147,7 +179,6 @@ body {
     background: none; /* Remove default background */
     border: none; /* Remove default border */
     padding: 0; /* Remove default padding */
-    cursor: pointer; /* Change cursor to pointer for interactivity */
     display: inline-flex; /* Align the image inside properly */
     border-radius: 50%; 
     overflow: hidden; /* Ensures the image stays within bounds */
@@ -158,3 +189,19 @@ body {
 }
 
 
+/* smaller screens */
+
+@media (max-width: 768px) {
+    .love, .light {
+        font-size: 15vw;
+    }
+
+    .traffic-light {
+        width: 20vw;
+    }
+
+    .sign-buttons button {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}

@@ -8,6 +8,8 @@ router.get('/person/getStatus/:id', personController.getStatus);
 router.get('/person/:nickname', personController.getPersonByNickname)
 router.get('/person/:any', personController.getPersonByAny)
 router.get('/person/id/:id', personController.getPersonByID)
+router.get('/person/statusByEmail/:email', personController.getStatusByEmail)
+router.get('/person/getNicknameByEmail/:email', personController.getNicknameByEmail)
 router.post('/person', personController.createPerson)
 router.put('/person/:nickname/gender', personController.putGenderByNickname)
 router.put('/person/:nickname/partner', personController.putPartnerByNickname)

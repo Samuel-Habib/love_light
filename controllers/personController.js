@@ -28,6 +28,21 @@ const getPersonByNickname = async (req, res) => {
     }
 }
 
+const getNicknameByEmail = async (req, res) => {
+    try {
+        const email = req.params.email;
+        const person = await personModel.findOne({email: email});
+        if (person) {
+            res.status(200).json(person.nickname);
+        } else {
+            res.status(404).send('Email not found');
+        }
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+    }
+}
+
 const putGenderByNickname = async (req, res) => {
     try {
         const justNickname = { nickname: req.params.nickname}
@@ -40,6 +55,19 @@ const putGenderByNickname = async (req, res) => {
     }
 }
 
+const getStatusByEmail = async (req, res) => {
+    try {
+        const email = req.params.email;
+        const person = await personModel.findOne({email: email});
+        if (person) {
+            res.status(200).json(person.status);
+        }
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+        
+    }
+}
 
 const getPersonByAny = async (req, res) => {
     try {
@@ -96,6 +124,7 @@ const putPartnerByNickname = async (req, res) => {
     }
 
 }
+
 
 const putEmail = async (req, res) => {
     try {
@@ -272,5 +301,7 @@ module.exports = {
     getPersonByAny,
     putPersonWithInviteCode,
     putStatusByNickname,
-    getPersonByID
+    getPersonByID,
+    getNicknameByEmail,
+    getStatusByEmail
 };

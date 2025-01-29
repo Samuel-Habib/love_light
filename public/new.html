@@ -9,39 +9,105 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        const idConfig = {
+            client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
+            callback: handleCredentialResponse,
+            use_fedcm_for_prompt: true
+        };
+        function handleCredentialResponse(response) {
+
+            function setCookie(name,value,days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days*24*60*60*1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0;i < ca.length;i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                }
+                return null;
+            }     
+
+            console.log("Encoded JWT ID token:", response.credential);
+            
+            // Send token to backend for verification
+            fetch(`/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include',
+                body: JSON.stringify({ token: response.credential })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Server Response:", data.user.email);
+                setCookie("email", data.user.email);
+                if (data.error) {
+                    console.error("Error:", data.error);
+                    return;
+                }else{
+                    window.location.href = "/home";
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        window.onload = function () {
+            google.accounts.id.initialize({
+                client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+
+            google.accounts.id.renderButton(
+                document.querySelector(".google-button"),
+                { theme: "outline", size: "large" } // Adjust styles as needed
+            );
+
+            google.accounts.id.prompt(); // Show One Tap prompt if enabled
+        };
+    </script>
 </head>
 <body>
-    <div id="big-text-div">
-        <p class="love">Love</p>
-        <p class="light">Light</p>
-    <div class="sign-buttons">
-        <div class="sign-up">
-            <div onclick="location.href='nickname.html'" > Sign up with Google </div>
-        </div>
-        <div class="sign-in">
-            <div onclick="location.href='/auth/google'" class="google-button">
-                Sign in with Google
+
+
+    <div class="container">
+        <div id="big-text-div">
+            <p class="love">Love</p>
+            <p class="light">Light</p>
+            <div class="sign-buttons">
+                <div class="sign-up">
+                    <div onclick="location.href='nickname.html'">Sign up </div>
+                </div>
+                <div class="sign-in">
+                    <div onclick="google.accounts.id.prompt()" class="google-button">
+                        Sign in with Google
+                    </div>
+                </div>
             </div>
         </div>
+
+        <div id="traffic-light" class="traffic-light">
+            <button class="light-button">
+                <div id="red" class="red-light"></div>
+            </button>
+            <button class="light-button">
+                <div id="yellow" class="yellow-light"></div>
+            </button>
+            <button class="light-button">
+                <div id="green" class="green-light"></div>
+            </button>
+        </div>
     </div>
-    </div>
-
-    <div id="traffic-light" class="traffic-light">
-        <button class="light-button">
-            <div id="red" class="red-light"></div>
-        </button>
-        <button class="light-button">
-            <div id="yellow" class="yellow-light"></div>
-        </button>
-        <button class="light-button">
-            <div id="green" class="green-light"></div>
-        </button>
-
-    
-
-
-    </div>  
-    
 </body>
 </html>
 

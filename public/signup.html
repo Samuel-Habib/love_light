@@ -7,7 +7,6 @@
     <title>Sign Up Page</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script >
-        // Callback function for handling sign-in
         const idConfig = {
             client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
             callback: handleCredentialResponse,
@@ -36,7 +35,7 @@
             }
             console.log("Encoded JWT ID token: " + response.credential);
             // send the token to server for validation
-            fetch("http://localhost:3000/auth/login", {
+            fetch(`/auth/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: response.credential })
@@ -45,6 +44,7 @@
             .then(data => {
                 console.log("Server Response:", data.user.email);
                 console.log("Server Response:", data);
+                // Handling of user information into the database
                 setCookie("email", data.user.email)
                 const nickname = getCookie("nickname")
                 console.log(getCookie("email") + "cookie")   
@@ -72,16 +72,19 @@
 <body>
     <h1>Sign Up Page</h1>
 
-    <!-- Google Sign-In Button -->
+    <!-- sign in button configuration -->
     <div id="g_id_onload"
         data-client_id="1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com"
         data-context="signin"
         data-ux_mode="popup"
-        data-login_uri="http://localhost:3000/auth/login"
+        data-login_uri="http://localhost:3000/auth/signup"
         data-callback="handleCredentialResponse"
         data-use_fedcm_for_prompt="true">
     </div>
-    <div class="g_id_signin" data-type="standard"></div>
+
+    <!-- rendering the actual sign in button -->
+    <div class="g_id_signin" data-type="standard"></div> 
+
 
 </body>
 </html>
