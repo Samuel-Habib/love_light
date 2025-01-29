@@ -52,6 +52,17 @@
             .then(data => {
                 console.log("Server Response:", data.user.email);
                 setCookie("email", data.user.email);
+
+                fetch(`/person/getNicknameByEmail/${data.user.email}`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" }
+                }).then(res => res.json())
+                .then(data => {
+                    console.log("Server Response:", data);
+                    setCookie("nickname", data.nickname);
+                })
+
+
                 if (data.error) {
                     console.error("Error:", data.error);
                     return;

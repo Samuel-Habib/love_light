@@ -96,48 +96,10 @@ try {
     });
     console.log(response)
 } catch (error) {
-    
-}
-
-try {
-    let response = await fetch(`/person/${nickname}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-} catch (error) {
     console.error('Error:', error);
 }
 
-
 const userButton = document.getElementById("user-avatar")
-// const partnerButton = document.getElementById("partner-avatar")
-
-// partnerButton.addEventListener("click", (e)=>{
-//     e.preventDefault()
-//     fetch(`/person/${partner}`, {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data)
-//         if(data.status == 1){
-//             changeColor(red, green, yellow, bR, dG, dY)
-//             }
-//         if(data.status == 2){
-//             changeColor(red, green, yellow, dR, dG, bY)
-//         }
-//         if(data.status == 3){
-//             changeColor(red, green, yellow, dR, bG, dY)
-//         }
-//     })
-//     .catch(error => console.error('Error:', error));
-// })
 
 userButton.addEventListener("click", (e)=>{
     e.preventDefault()
@@ -163,15 +125,6 @@ userButton.addEventListener("click", (e)=>{
     .catch(error => console.error('Error:', error));
 })
 
-
-
-// const statusData = await statusResponse.json();
-// if (statusData) {
-//     status = statusData.status;
-//     console.log(statusData);
-// } else {
-//     console.error('Error: statusData is null or undefined');
-// }
 
 
 if(status == 1){
