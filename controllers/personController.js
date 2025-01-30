@@ -223,7 +223,9 @@ const putStatusByNickname = async (req, res) =>{
         console.log(req.body.nickname)
         const person = await personModel.findOneAndUpdate(
             {nickname: req.body.nickname}, 
-            {status: req.body.status})
+            {status: req.body.status},
+            {new: true}
+        )
         if(!person){
             return res.status(404).json({msg: 'Status not found'});
         } else{ res.status(200); }
@@ -260,13 +262,28 @@ const putPersonWithInviteCode = async (req, res) => {
         if (partnerInviteCodeDoc) {
             const person = await personModel.findOneAndUpdate(
                 { nickname: req.body.nickname },
-                { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true } }
+                { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true }},
+                { new: true, upsert: false }
+                // this is very important, if you don't use new: true, the document will not be updated
+                // and the next part will use the old document where partner is still null
+                // this means that the user has to click the button twice to get the partner
             );
             const otherPerson = await personModel.findOneAndUpdate(
                 { _id: person.partner instanceof mongoose.Types.ObjectId ? person.partner : new mongoose.Types.ObjectId(person.partner) },
                 { $set: { partner: person._id, inviteApproval: true } },
                 { new: true, upsert: false }
+                //
             );
+
+            // testing
+
+            const testPerson = await personModel.findOne({_id: person.partner});
+            console.log(testPerson, "test person document");
+
+            //testing
+
+
+            console.log(otherPerson, "Updated other person document");
 
             if (!otherPerson) {
                 console.log("No matching document found for partner");
