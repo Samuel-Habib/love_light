@@ -1,6 +1,6 @@
 // the purpose of this page is to be a READ ONLY page 
 // for the partner
-export function setCookie(name,value,days) {
+function setCookie(name,value,days) {
     var expires = "";
     if (days) {
         var date = new Date();
@@ -10,7 +10,7 @@ export function setCookie(name,value,days) {
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
 
-export function getCookie(name) {
+function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
@@ -21,13 +21,8 @@ export function getCookie(name) {
     return null;
 }
 
-export function clearAllCookies() {
-    document.cookie.split(";").forEach((cookie) => {
-        document.cookie = cookie
-            .replace(/^ +/, "") // Remove leading spaces
-            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"); // Expire the cookie
-    });
-}
+
+
 
 
 let status = 0
@@ -89,7 +84,8 @@ try {
     console.error('Error:', error);
 }
 
-
+console.log(partner, "partner")
+console.log(status, "status")
 if(status == 1){
     changeColor(red, green, yellow, bR, dG, dY)
 }

@@ -48,9 +48,21 @@
                 credentials: 'include',
                 body: JSON.stringify({ token: response.credential })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("HTTP status " + res.status);
+                } else{
+                    const clearFirst = () => document.cookie.split(";").forEach((cookie) => {
+                        document.cookie = cookie
+                            .replace(/^ +/, "") // Remove leading spaces
+                            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"); // Expire the cookie
+                    }); 
+                    return res.json();
+ 
+                }
+            })
             .then(data => {
-                console.log("Server Response:", data.user.email);
+               console.log("Server Response:", data.user.email);
                 setCookie("email", data.user.email);
 
                 fetch(`/person/getNicknameByEmail/${data.user.email}`, {
@@ -59,16 +71,19 @@
                 }).then(res => res.json())
                 .then(data => {
                     console.log("Server Response:", data);
-                    setCookie("nickname", data.nickname);
-                })
+                    console.log("nick Response:", data);
+                    setCookie("nickname", data);
+                    return 1;
+                }).then(data => {
+                    if (data.error) {
+                        console.error("Error:", data.error);
+                        return;
+                    } else {
+                        window.location.href = "/home";
+                    }
+                });
 
-
-                if (data.error) {
-                    console.error("Error:", data.error);
-                    return;
-                }else{
-                    window.location.href = "/home";
-                }
+                
             })
             .catch(error => console.error("Error:", error));
         }
