@@ -9,6 +9,7 @@ export function setCookie(name,value,days) {
     document.cookie = name + "=" + (value || "")  + expires + "; path=/";
 }
 
+
 export function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -20,21 +21,39 @@ export function getCookie(name) {
     return null;
 }
 
+let status = 0
+let nickname = getCookie("nickname")
+console.log(nickname, "nickname")
+let email = getCookie("email")
+console.log(email, "email")
+
+
+const red = document.getElementById("red");
+const yellow = document.getElementById("yellow");
+const green = document.getElementById("green");
+const bG = `rgb(96,217, 55)`;
+const bR = `rgb(237,34,13)`;
+const bY = `rgb(254,174,0)`;
+
+const dG = `rgb(50,108,30)`;
+const dR = `rgb(129,19, 10)`;
+const dY = `rgb(127,87, 11)`;
+
 // when you click
-export function addColorClickListeners() {
-    green.addEventListener("click", (e) => {
-        e.preventDefault();
-        colorClick(red, green, yellow, dR, bG, dY, 3);
-    });
-    red.addEventListener("click", (e) => {
-        e.preventDefault();
-        colorClick(red, green, yellow, bR, dG, dY, 1);
-    });
-    yellow.addEventListener("click", (e) => {
-        e.preventDefault();
-        colorClick(red, green, yellow, dR, dG, bY, 2);
-    });
-}
+
+green.addEventListener("click", (e) => {
+    e.preventDefault();
+    colorClick(red, green, yellow, dR, bG, dY, 3);
+});
+red.addEventListener("click", (e) => {
+    e.preventDefault();
+    colorClick(red, green, yellow, bR, dG, dY, 1);
+});
+yellow.addEventListener("click", (e) => {
+    e.preventDefault();
+    colorClick(red, green, yellow, dR, dG, bY, 2);
+});
+
 
 export function colorClick(prevR, prevG, prevY, newR, newG, newY, status)
 {
@@ -63,29 +82,13 @@ export function changeColor(red, green, yellow, newR, newG, newY){
     yellow.style.backgroundColor = newY
 }
 
-export const red = document.getElementById("red");
-export const yellow = document.getElementById("yellow");
-export const green = document.getElementById("green");
-export const bG = `rgb(96,217, 55)`;
-export const bR = `rgb(237,34,13)`;
-export const bY = `rgb(254,174,0)`;
 
-export const dG = `rgb(50,108,30)`;
-export const dR = `rgb(129,19, 10)`;
-export const dY = `rgb(127,87, 11)`;
 
 
 //when you first enter the page
 // NOTE: when testing you MUST have a cookie set for nickname, otherwise the fetch will return null
 
-addColorClickListeners();
 
-let status = 0
-let nickname = getCookie("nickname")
-console.log(nickname, "nickname")
-let email = getCookie("email")
-console.log(email, "email")
-// let partner = ""
 
 try {
     let response = await fetch(`/person/statusByEmail/${email}`, {
@@ -93,7 +96,28 @@ try {
         headers: {
             'Content-Type': 'application/json'
         }
-    });
+    }).then(response => response.json())
+    .then(data => {
+        console.log(data, "data")
+        if(data == 1){
+            console.log("status 1")
+            changeColor(red, green, yellow, bR, dG, dY)
+        }
+        if(data == 2){
+            console.log("status 2")
+            changeColor(red, green, yellow, dR, dG, bY)
+        }
+        if(data == 3){
+            console.log("status 3")
+            changeColor(red, green, yellow, dR, bG, dY)
+        }
+       
+       
+        console.log(data)
+        return data
+
+    }, error => console.error('Error:', error));
+    status = response.status
     console.log(response)
 } catch (error) {
     console.error('Error:', error);
