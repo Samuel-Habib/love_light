@@ -4,30 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
-    <title>Document</title>
+    <title>Invite Your Partner</title>
+    <style>
+        body {
+            background-color: rgba(206,207,214,255);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
 
-    <div style="text-align: center;">
-        <h1>Invite your partner</h1>
-    </div>
+    <h1>Invite your partner</h1>
+    <form id="partner-invite">
+        <input id="inviter" type="text" placeholder="Nickname or Email">
+        <button type="submit">Submit</button>
+    </form>
 
-    <div style="text-align: center;">
-        <form id="partner-invite" type="submit" "> 
-            <input id="inviter" type="text" placeholder="nickname or email">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-    <div style="text-align: center;">
-        <h1> OR accept your invite with an invite code</h1>
-        <form id="accept-invite-form">
-            <input type="text" id="inviteCode" type="submit" name="inviteCode">
-            <button>Submit</button>
-        </form>
-    </div>
-    <div style="text-align: center;">
-        <button id="later" onclick="window.location.href = '/home2.html' "> Go to home </button>
-    </div>
+    <h1>OR accept your invite with an invite code</h1>
+    <form id="accept-invite-form">
+        <input type="text" id="inviteCode" placeholder="Invite Code">
+        <button type="submit">Submit</button>
+    </form>
+    
+    <button id="later" onclick="window.location.href = '/home2.html'">Go to Home</button>
 
 </body>
 <script>
