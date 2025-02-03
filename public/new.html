@@ -89,17 +89,17 @@
         }
 
         window.onload = function () {
-            google.accounts.id.initialize({
+           google.accounts.id.initialize({
                 client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
                 callback: handleCredentialResponse
             });
 
             google.accounts.id.renderButton(
-                document.querySelector(".google-button"),
-                { theme: "outline", size: "large" } // Adjust styles as needed
+                document.querySelector(".google-button"), 
+                { theme: "outline", size: "large" } // Adjust styling
             );
 
-            google.accounts.id.prompt(); // Show One Tap prompt if enabled
+            google.accounts.id.prompt(); // Show One Tap login (optional)
         };
     </script>
 </head>
@@ -115,8 +115,10 @@
                     <div onclick="location.href='nickname.html'">Sign up </div>
                 </div>
                 <div class="sign-in">
-                    <div onclick="google.accounts.id.prompt()" class="google-button">
-                        Sign in with Google
+                    <div id="google-signin-container">
+                        <div onclick="google.accounts.id.prompt()" class="google-button">
+                            Sign in with Google
+                        </div>
                     </div>
                 </div>
             </div>

@@ -5,17 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
     <title>Document</title>
+    <style>
+        body {
+            background: rgba(206,207,214,255);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        #gender-form {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+    </style>
 </head>
 <body>
-    <div style="text-align: center;">
-        <h1 style="font-family: Helvetica; font-weight: normal;">What is your gender Identity?</h1>
+    <div class="container">
+        <h1 style="font-family: Helvetica; font-weight: normal;"></h1>
         <form id="gender-form" method="POST">
-            <input type="image" id="man" img src="./assets/self-man.png" onclick="window.location.href='/signup.html'" />       
-            <input type="image" id="woman" img src="./assets/self-woman.png" onclick="window.location.href='/signup.html'" />       
-            <input type="image" id="queer" img src="./assets/self-queer.png" onclick="window.location.href='/signup.html'" />       
+            <input type="image" id="man" src="./assets/self-man.png" onclick="window.location.href='/signup.html'" />       
+            <input type="image" id="woman" src="./assets/self-woman.png" onclick="window.location.href='/signup.html'" />       
+            <input type="image" id="queer" src="./assets/self-queer.png" onclick="window.location.href='/signup.html'" />       
         </form>
     </div>
+    <script type="module" src="./js/gender.js"></script>
 </body>
-
-<script  type="module" src="./js/gender.js"> </script>
 </html>
