@@ -1,18 +1,18 @@
-# Partner Light
 
-Welcome to the Partner Light project! This README will help you understand how to set up, use, and contribute to this project.
+# Love Light
+
+Love Light is a simple way to communicate your feelings to your partner. This website is a complete demonstration of the idea, although this would be a mobile app for convenience (coming soon). 
+
+
+![landing page](./.github/assets/home.png)
+![Home page](./.github/assets/landing.png)
+
 
 ## Table of Contents
 
-- [Introduction](#introduction)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
 - [License](#license)
-
-## Introduction
-
-Partner Light is a project designed to [brief description of what the project does].
 
 ## Installation
 
@@ -20,11 +20,11 @@ To install the project, follow these steps:
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/partner_light.git
+    git clone https://github.com/yourusername/love_light.git
     ```
 2. Navigate to the project directory:
     ```sh
-    cd partner_light
+    cd love_light
     ```
 3. Install the dependencies:
     ```sh
@@ -37,10 +37,6 @@ To start using the project, run:
 ```sh
 npm start
 ```
-
-## Contributing
-
-We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## License
 
