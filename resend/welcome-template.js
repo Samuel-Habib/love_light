@@ -84,8 +84,6 @@ const welcome = (recipient) => {
         </tr>
         <tr>
             <td style="text-align: center; font-size: 12px; color: #999999; padding: 10px 20px;">
-            &copy; 2025 [Your Company Name]. All rights reserved. <br />
-            1234 Your Address, City, State, ZIP Code
             </td>
         </tr>
         </table>
