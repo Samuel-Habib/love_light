@@ -26,11 +26,13 @@ const personRoutes = require('./routes/personRoutes').router;
 const appRoutes = require('./routes/appRoutes').router;
 const loginRoutes = require('./routes/loginRoutes')
 const resendRoutes = require("./routes/resendRoutes")
+const url = require('./routes/url');
 
 app.use(personRoutes);
 app.use(appRoutes);
 app.use("/resend", resendRoutes)
 app.use("/auth", loginRoutes);
+app.use(url);
 
 
 app.use((req, res, next) => {
