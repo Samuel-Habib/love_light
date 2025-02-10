@@ -36,18 +36,22 @@ router.post('/sendInvite', async (req,res) =>{
         html: generateInviteEmail(req.body.nickname, InviteCode),
       });
     
-    const inviter = await personModel.findOne({nickname: req.body.nickname})
-    console.log(req.body)
+    let inviter;
+    try {
+      inviter = await personModel.findOne({nickname: req.body.nickname});
+      if (!inviter) {
+        return res.status(404).send({ error: 'Inviter not found' });
+      }
 
-    console.log(inviter.id, "this is inviter")
-    
-    console.log(inviter)
-    if(typeof(InviteCode)){
-      const invitee = new personModel({partner: inviter.id, inviteCode: InviteCode, email: req.body.email})
-      await invitee.save();
-    } else{
-      console.log("not a string ")
-      console.log(typeof(InviteCode))
+      if(typeof(InviteCode)){
+            const invitee = new personModel({partner: inviter.id, inviteCode: InviteCode, email: req.body.email})
+            await invitee.save();
+          } else{
+            console.log("not a string ")
+            console.log(typeof(InviteCode))
+          }
+          } catch (err) {
+      return res.status(500).send({ error: 'Database error' });
     }
 
     // create a mongodb object with the invite code but also the objectid 

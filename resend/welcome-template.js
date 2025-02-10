@@ -59,26 +59,27 @@ const welcome = (recipient) => {
         <table role="presentation">
         <tr>
             <td>
-            <h1>Welcome to Our Platform!</h1>
+            <h1>Welcome to Love Light!</h1>
             <p>
                 Hi ${recipient},
             </p>
             <p>
-                We're thrilled to have you join us! Our platform is designed to help you [briefly mention what the platform does or provides]. Feel free to explore and make the most out of it.
+                Thank you for checking out Love Light! Love Light is a super simple way to 
+                connect with your partner through a simple traffic light system. You can use 
+                it to let your partner know how you're feeling at any time, and you can even 
+                set up notifications to remind you to check in with each other.
             </p>
             <p>
                 To get started, click the button below:
             </p>
-            <p>
-                <a href="[Your Link Here]" class="button">Get Started</a>
-            </p>
+            
             <p>
                 If you have any questions, feel free to reply to this email or contact us at <a href="mailto:support@example.com">support@example.com</a>.
             </p>
             <p>
                 Best regards,<br />
-                The MangoBlaze Team
-            </p>
+                Sam
+                </p>
             </td>
         </tr>
         <tr>
