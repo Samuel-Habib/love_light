@@ -64,7 +64,7 @@ const generateInviteEmail = (recipient, inviteCode) => {
                 Hi ${recipient}'s partner,
             </p>
             <p>
-                We're excited to have you on board! Below is your exclusive invite code to access our platform:
+                We're excited to have you on board! Below is the invite code you can use to connect your account with ${recipient}'s account and share your feelings with each other. 
             </p>
             <p>
                 <span class="invite-code">${inviteCode}</span>
@@ -74,14 +74,12 @@ const generateInviteEmail = (recipient, inviteCode) => {
             </p>
             <p>
                 Best regards,<br />
-                The MangoBlaze Team
-            </p>
+                Sam
+                </p>
             </td>
         </tr>
         <tr>
             <td style="text-align: center; font-size: 12px; color: #999999; padding: 10px 20px;">
-            &copy; 2025 [Your Company Name]. All rights reserved. <br />
-            1234 Your Address, City, State, ZIP Code
             </td>
         </tr>
         </table>
