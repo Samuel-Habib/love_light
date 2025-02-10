@@ -23,7 +23,6 @@ form.addEventListener('submit', async (event) => {
         const responseData = await response.text();
         console.log('First request Success:', responseData);
 
-
         const onboardingResponse = await fetch('/resend/sendOnboarding', {
             method: 'POST',
             headers: {
@@ -35,31 +34,30 @@ form.addEventListener('submit', async (event) => {
             })
         });
 
-        // onboardingResponse seems to casuing the page to not redirect to the next page
-
         if (!onboardingResponse.ok) {
             throw new Error(`Onboarding HTTP error! status: ${onboardingResponse.status}`);
         }
         
-        window.location.href = "./gender.html";
-        
     } catch (error) {
         console.error('Error:', error);
-    }
-});
-
-form.addEventListener('submit', async (event) => {
-    // for now this is a workaround to allow the page to go to the next page
-    // there is some issues with the fetch request that is preventing the page from going to the next page
-    // this seems to be a promise based error
-
-    // robust error handling needs to be in place in case the nickname doesn't get saved
-    // however, because the nickname is required for gender, the user will be stuck on this page
-
-    event.preventDefault()
-
-    setTimeout(() => {
+    } finally {
         window.location.href = "./gender.html";
-    }, 500);
-
+    }
+    
 });
+
+// form.addEventListener('submit', async (event) => {
+//     // for now this is a workaround to allow the page to go to the next page
+//     // there is some issues with the fetch request that is preventing the page from going to the next page
+//     // this seems to be a promise based error
+
+//     // robust error handling needs to be in place in case the nickname doesn't get saved
+//     // however, because the nickname is required for gender, the user will be stuck on this page
+
+//     event.preventDefault()
+
+//     setTimeout(() => {
+//         window.location.href = "./gender.html";
+//     }, 100);
+
+// });

@@ -70,7 +70,7 @@ const generateInviteEmail = (recipient, inviteCode) => {
                 <span class="invite-code">${inviteCode}</span>
             </p>
             <p>
-                Enter this code on the signup page to get started. If you have any questions, feel free to reply to this email or contact us at <a href="mailto:support@example.com">support@example.com</a>.
+                Enter this code on the signup page to get started. If you have any questions, feel free to reply to this email or contact us at <a href="mailto:support@samuelhabib.com">support@samuelhabib.com</a>.
             </p>
             <p>
                 Best regards,<br />

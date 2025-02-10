@@ -36,9 +36,8 @@ router.post('/sendInvite', async (req,res) =>{
         html: generateInviteEmail(req.body.nickname, InviteCode),
       });
     
-    let inviter;
     try {
-      inviter = await personModel.findOne({nickname: req.body.nickname});
+      let inviter = await personModel.findOne({nickname: req.body.nickname});
       if (!inviter) {
         return res.status(404).send({ error: 'Inviter not found' });
       }
@@ -50,9 +49,9 @@ router.post('/sendInvite', async (req,res) =>{
             console.log("not a string ")
             console.log(typeof(InviteCode))
           }
-          } catch (err) {
-      return res.status(500).send({ error: 'Database error' });
-    }
+    } catch (err) {
+        return res.status(500).send({ error: 'Database error' });
+    } 
 
     // create a mongodb object with the invite code but also the objectid 
     // of the person who sent the invite, put a link to their docoument as well
