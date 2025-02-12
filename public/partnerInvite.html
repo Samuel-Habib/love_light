@@ -22,19 +22,19 @@
         }
         form {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 1.5rem;
+            border-radius: 4.5vw;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 300px;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 3rem; 
         }
         input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
+            width: 70%;
+            padding: 1rem; 
+            margin: 10px ;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 2vw;
             font-size: 16px;
         }
         button {
@@ -49,24 +49,36 @@
         button:hover {
             background-color: #45a049;
         }
-        
+
+        .blue-button {
+            background-color: #4485ff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .blue-button:hover {
+            background-color: rgb(40, 75, 231); 
+        }
     </style>
 </head>
 <body>
 
-    <h1>Invite your partner</h1>
     <form id="partner-invite">
+        <h1>Invite your partner</h1>
         <input id="inviter" type="text" placeholder="Nickname or Email">
         <button type="submit">Submit</button>
     </form>
 
-    <h1>Accept Invite</h1>
     <form id="accept-invite-form">
+        <h2>Accept Invite</h2>
         <input type="text" id="inviteCode" placeholder="Invite Code">
         <button type="submit">Submit</button>
     </form>
     
-    <button id="later" onclick="window.location.href = '/home2.html'">Go to Home</button>
+    <button class="blue-button" id="later" onclick="window.location.href = '/home.html'">Go to Home</button>
 
 </body>
 <script>
