@@ -6,9 +6,9 @@ const app = express();
 
 const cors = require('cors');
 app.use(cors({
-    origin: process.env.URL ||'http://localhost:3000', // Change this to your frontend URL in production
+    origin: process.env.URL ||'http://localhost:3000', 
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Allows cookies/session headers if applicable
+    credentials: true, 
 }));
 app.options(process.env.URL, cors());
 
@@ -18,7 +18,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// Serve static files from the 'public' directory
+// static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API ROUTES
