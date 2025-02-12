@@ -3,71 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Document</title>
     <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
-    <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="./style/home2.css">
+    <title>Home</title>
 </head>
 <body>
+    <div class="traffic-light-container">
+        <div id="traffic-light" class="traffic-light">
+            <button class="light-button">
+                <div id="red" class="red-light"></div>
+            </button>
+            <button class="light-button">
+                <div id="yellow" class="yellow-light"></div>
+            </button>
+            <button class="light-button">
+                <div id="green" class="green-light"></div>
+            </button>
+        </div>    
 
-    <div style="display: flex;">
-        <div style="display: flex; flex-direction: column;">
-            <div style="text-align: left;">
-                <img id="selfImage" src="assets/selfMAN.png" alt="Self Image">
-            </div>
-            <div style="text-align: left;">
-                <img id="partnerImage" src="assets/partnerWOMAN.png" alt="Partner Image">
-            </div>
-        </div>
-        <div style="text-align: center; margin-left: 20px;">
+        <div class="avatar-light-container">
+            <button class="avatar-button" id="user-avatar">
+                <img class="avatar1" src="./assets/3D Avatars/1.svg" alt="avatar">
+            </button>
 
-            <img id="mainImage" src="assets/OFF.png" usemap="#image-map-off">
+            <button class="avatar-button" id="partner-avatar" onclick="window.location.href = '/partner.html'">
+                <img class="avatar2" src="./assets/3D Avatars/2.svg" alt="avatar">
+            </button>
 
-            <map name="image-map-off">
-                <area id="red" alt="a" title="a" coords="214,215,172" shape="circle">
-                <area id="yellow" alt="b" title="b" coords="621,215,173" shape="circle">
-                <area id="green" alt="c" title="c" coords="1027,214,172" shape="circle">
-            </map>
+            <button class="avatar-button" id="settings" onclick="window.location.href = '/settings.html'">
+                <img class="arrow"  src="./assets/other-icons/carrot.svg" alt="">
+            </button>
 
-            <map name="image-map-red">
-                <area target="" alt="a" title="a" coords="621,215,174" shape="circle">
-                <area target="" alt="b" title="b" coords="1028,214,173" shape="circle">
-            </map>
-
-            <map name="image-map-yellow">
-                <area target="" alt="" title="" href="" coords="212,214,175" shape="circle">
-                <area target="" alt="" title="" href="" coords="1027,214,175" shape="circle">
-            </map>
-
-            <map name="image-map-green">
-                <area target="" alt="" title="" href="" coords="213,214,172" shape="circle">
-                <area target="" alt="" title="" href="" coords="621,214,171" shape="circle">
-            </map>
-        </div>
+            <!-- <big id="big-text" style="font-size: 100px;">></big> -->
+    
+        </div>   
     </div>
-
-    <script>
-
-        function changeImage(imgID, newImgID, newMap) {
-            document.getElementById(imgID).src= newImgID;
-            document.getElementById(imgID).usemap= newMap;
-        }
-
-
-        document.getElementById('red').addEventListener('click', () => {
-            changeImage('mainImage', "assets/RED.png", "image-map-red");
-        });
-
-        document.getElementById('yellow').addEventListener('click', () => {
-            changeImage('mainImage', "assets/YELLOW.png", "image-map-yellow");
-        });
-
-        document.getElementById('green').addEventListener('click', () => {
-            changeImage('mainImage', "assets/GREEN.png", "image-map-green");
-        });
-
-
-
-    </script>
 </body>
+
+<script type="module" src="./js/home.js"></script>
+
 </html>

@@ -60,7 +60,7 @@
                 return null;
             }
             console.log("Encoded JWT ID token: " + response.credential);
-            // send the token to server for validation
+            // Send the token to server for validation
 
             let url = ''
 
@@ -93,7 +93,7 @@
                     })
                 })
 
-                window.location.href = "/partnerInvite.html"; // Navigate after fetch completes
+                window.location.href = "/partnerInvite.html";
             })
             .catch(error => console.error("Error:", error));
         }
