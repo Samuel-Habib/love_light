@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings</title>
+    <link rel="stylesheet" href="./style/s.css">
 </head>
 <body>
     <header>
@@ -14,10 +15,23 @@
         <section>
             <h2>Profile Settings</h2>
             <!-- Profile settings form goes here -->
-        </section>
-        <section>
-            <h2>Account Settings</h2>
-            <!-- Account settings form goes here -->
+
+            <div class="avatar-container">
+                <div class="avatar-self">
+
+                </div>
+                <div class="avatar-partner">
+
+                </div>
+            </div>
+
+            <form id="profile-settings-form">
+                <input placeholder="nickname" type="text" id="nick" name="nick" required>
+                <input placeholder="anniversary date" type="date" id="ann" name="ann" required>
+                <input type="date" name="birth-date" id="birth-date" required>
+                <!-- <label for="profile-avatar">Avatar:</label> -->
+                <!-- <input type="file" id="profile-avatar" name="profile-avatar" accept="image/*"> -->
+                <!-- <button type="submit">Save</button> -->
         </section>
     </main>
     <footer>
