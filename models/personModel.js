@@ -33,6 +33,14 @@ const personSchema = new mongoose.Schema({
     email: {
         type: String,
         required: false
+    }, 
+    avatar: {
+        type: Number,
+        required: false
+    },
+    image: {
+        type: String,
+        required: false
     }
 });
 
