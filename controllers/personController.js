@@ -18,6 +18,15 @@ const createPerson = async (req, res) => {
     }
 } 
 
+
+
+const putAvatar = async (req, res) => {
+
+    
+}
+
+
+
 const getPersonByNickname = async (req, res) => {
     try{
         const person = await personModel.findOne({nickname: req.params.nickname})
