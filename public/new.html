@@ -5,12 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="./assets/icons8-favicon-16.png">
     <title>Document</title>
+    
+    <!-- Updated CSP to fix remaining issues -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://accounts.google.com https://apis.google.com https://*.gstatic.com 'unsafe-inline'; connect-src 'self' https://accounts.google.com https://*.google.com https://play.google.com; frame-src 'self' https://accounts.google.com; img-src 'self' https://accounts.google.com data:; style-src 'self' https://fonts.googleapis.com https://accounts.google.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com;">
+    
     <link rel="stylesheet" href="./style/new.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    
+    <!-- Update Google Sign-In script with proper attributes -->
+    <script src="https://accounts.google.com/gsi/client" async defer nonce="GoogleSignInNonce"></script>
     <script>
+        // Safe JSON parsing with error handling
+        function safeJsonParse(response) {
+            return response.text().then(text => {
+                try {
+                    return text.trim() ? JSON.parse(text) : {};
+                } catch (e) {
+                    console.error("JSON parsing error:", e, "Response text:", text);
+                    return {};
+                }
+            });
+        }
+
         const idConfig = {
             client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
             callback: handleCredentialResponse,
@@ -51,41 +69,51 @@
             .then(res => {
                 if (!res.ok) {
                     throw new Error("HTTP status " + res.status);
-                } else{
+                } else {
                     const clearFirst = () => document.cookie.split(";").forEach((cookie) => {
                         document.cookie = cookie
-                            .replace(/^ +/, "") // Remove leading spaces
-                            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"); // Expire the cookie
+                            .replace(/^ +/, "")
+                            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/");
                     }); 
-                    return res.json();
- 
+                    return safeJsonParse(res); // Use safe JSON parsing
                 }
             })
             .then(data => {
-               console.log("Server Response:", data.user.email);
+                if (!data || !data.user || !data.user.email) {
+                    throw new Error("Invalid response from auth server");
+                }
+                
+                console.log("Server Response:", data.user.email);
                 setCookie("email", data.user.email);
 
-                fetch(`/person/getNicknameByEmail/${data.user.email}`, {
+                return fetch(`/person/getNicknameByEmail/${data.user.email}`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" }
-                }).then(res => res.json())
-                .then(data => {
-                    console.log("Server Response:", data);
-                    console.log("nick Response:", data);
-                    setCookie("nickname", data);
-                    return 1;
-                }).then(data => {
-                    if (data.error) {
-                        console.error("Error:", data.error);
-                        return;
-                    } else {
-                        window.location.href = "/home";
+                }).then(res => {
+                    if (!res.ok) {
+                        if (res.status === 404) {
+                            console.log("User not found, continuing without nickname");
+                            return null;
+                        }
+                        throw new Error("Failed to get nickname: " + res.status);
                     }
+                    return safeJsonParse(res); // Use safe JSON parsing
                 });
-
-                
             })
-            .catch(error => console.error("Error:", error));
+            .then(data => {
+                if (data) {
+                    console.log("Nickname Response:", data);
+                    setCookie("nickname", data);
+                }
+                return true;
+            })
+            .then(success => {
+                window.location.href = "/home";
+            })
+            .catch(error => {
+                console.error("Error during sign-in process:", error);
+                alert("Sign-in failed. Please try again.");
+            });
         }
 
         window.onload = function () {

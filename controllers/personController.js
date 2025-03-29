@@ -246,7 +246,7 @@ const putStatusByNickname = async (req, res) =>{
 }
 
 
-const putApprovalByNickname = async (req, reqs) =>{
+const putApprovalByNickname = async (req, res) =>{
     try{
         // note this is find by id
         const person = await personModel.findOneAndUpdate(
@@ -273,6 +273,7 @@ const putPersonWithInviteCode = async (req, res) => {
                 { nickname: req.body.nickname },
                 { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true }},
                 { new: true, upsert: false }
+
                 // this is very important, if you don't use new: true, the document will not be updated
                 // and the next part will use the old document where partner is still null
                 // this means that the user has to click the button twice to get the partner
@@ -293,6 +294,11 @@ const putPersonWithInviteCode = async (req, res) => {
 
 
             console.log(otherPerson, "Updated other person document");
+
+
+            // delete the invite code
+
+            await personModel.findOneAndDelete({ inviteCode: req.body.inviteCode });
 
             if (!otherPerson) {
                 console.log("No matching document found for partner");
