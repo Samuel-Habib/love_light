@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px; margin: 5px; }
+        pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>API Route Testing</h1>
+    
+    <div>
+        <h2>Test Status Update Route</h2>
+        <input id="nickname" placeholder="Enter nickname" value="" />
+        <select id="status">
+            <option value="1">Red</option>
+            <option value="2">Yellow</option>
+            <option value="3">Green</option>
+        </select>
+        <button id="test-status">Test PUT /person/status</button>
+        <div id="status-result"></div>
+    </div>
+
+    <div>
+        <h2>Test Multiple Status Update Endpoints</h2>
+        <p>This will help identify which endpoint is working for your server</p>
+        <input id="nickname-multi" placeholder="Enter nickname" value="" />
+        <select id="status-multi">
+            <option value="1">Red</option>
+            <option value="2">Yellow</option>
+            <option value="3">Green</option>
+        </select>
+        <button id="test-all-endpoints">Test All Status Update Endpoints</button>
+        <div id="multi-endpoint-result"></div>
+    </div>
+
+    <script>
+        document.getElementById('test-status').addEventListener('click', async () => {
+            const nickname = document.getElementById('nickname').value;
+            const status = document.getElementById('status').value;
+            const resultDiv = document.getElementById('status-result');
+            
+            if (!nickname) {
+                resultDiv.innerHTML = '<p style="color:red">Please enter a nickname</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing...</p>';
+            
+            try {
+                const response = await fetch('/person/status', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nickname, status })
+                });
+                
+                const text = await response.text();
+                let json;
+                try {
+                    json = JSON.parse(text);
+                } catch (e) {
+                    json = null;
+                }
+                
+                resultDiv.innerHTML = `
+                    <p>Status Code: ${response.status}</p>
+                    <p>Response Text:</p>
+                    <pre>${text}</pre>
+                    <p>Parsed JSON:</p>
+                    <pre>${json ? JSON.stringify(json, null, 2) : 'Not valid JSON'}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p style="color:red">Error: ${error.message}</p>
+                    <p>This likely indicates a network issue or that the server route doesn't exist.</p>
+                `;
+            }
+        });
+
+        document.getElementById('test-all-endpoints').addEventListener('click', async () => {
+            const nickname = document.getElementById('nickname-multi').value;
+            const status = document.getElementById('status-multi').value;
+            const resultDiv = document.getElementById('multi-endpoint-result');
+            
+            if (!nickname) {
+                resultDiv.innerHTML = '<p style="color:red">Please enter a nickname</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = '<p>Testing multiple endpoints...</p>';
+            let results = '';
+            
+            // Test endpoint 1: /person/status
+            try {
+                const response = await fetch('/person/status', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nickname, status })
+                });
+                results += `<h3>Endpoint: PUT /person/status</h3>
+                    <p>Status Code: ${response.status}</p>
+                    <pre>${await response.text()}</pre>`;
+            } catch (error) {
+                results += `<h3>Endpoint: PUT /person/status</h3>
+                    <p style="color:red">Error: ${error.message}</p>`;
+            }
+            
+            // Test endpoint 2: /person/{nickname}/status/{status}
+            try {
+                const response = await fetch(`/person/${nickname}/status/${status}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                results += `<h3>Endpoint: PUT /person/${nickname}/status/${status}</h3>
+                    <p>Status Code: ${response.status}</p>
+                    <pre>${await response.text()}</pre>`;
+            } catch (error) {
+                results += `<h3>Endpoint: PUT /person/${nickname}/status/${status}</h3>
+                    <p style="color:red">Error: ${error.message}</p>`;
+            }
+            
+            // Test endpoint 3: /update-status (GET query params)
+            try {
+                const response = await fetch(`/update-status?nickname=${nickname}&status=${status}`, {
+                    method: 'GET'
+                });
+                results += `<h3>Endpoint: GET /update-status?nickname=${nickname}&status=${status}</h3>
+                    <p>Status Code: ${response.status}</p>
+                    <pre>${await response.text()}</pre>`;
+            } catch (error) {
+                results += `<h3>Endpoint: GET /update-status?nickname=${nickname}&status=${status}</h3>
+                    <p style="color:red">Error: ${error.message}</p>`;
+            }
+            
+            resultDiv.innerHTML = results;
+        });
+    </script>
+</body>
+</html>

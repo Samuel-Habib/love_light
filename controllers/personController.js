@@ -19,12 +19,10 @@ const createPerson = async (req, res) => {
 } 
 
 
-
 const putAvatar = async (req, res) => {
 
     
 }
-
 
 
 const getPersonByNickname = async (req, res) => {
@@ -228,23 +226,22 @@ const getStatus = async (req, res) =>{
 
 const putStatusByNickname = async (req, res) =>{ 
     try {
-        // expects a nickname from the request body
-        console.log(req.body.nickname)
+        console.log("Updating status for nickname:", req.body.nickname, "to:", req.body.status);
         const person = await personModel.findOneAndUpdate(
             {nickname: req.body.nickname}, 
             {status: req.body.status},
             {new: true}
         )
         if(!person){
-            return res.status(404).json({msg: 'Status not found'});
-        } else{ res.status(200); }
+            return res.status(404).json({msg: 'Person not found'});
+        } else{ 
+            return res.status(200).json({msg: 'Status updated', person}); 
+        }
     } catch (error) {
         console.error(`Error: ${error.message}`);
-        res.status(500).send('Server Error');
-        
+        return res.status(500).json({error: 'Server Error'});
     }
 }
-
 
 const putApprovalByNickname = async (req, res) =>{
     try{
