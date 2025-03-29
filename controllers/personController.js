@@ -135,14 +135,16 @@ const putPartnerByNickname = async (req, res) => {
 
 const putEmail = async (req, res) => {
     try {
-        // Validate inputs
-        if (!req.params.nickname || !req.body.email) {
-            return res.status(400).json({ message: 'Nickname and email are required' });
+        const { nickname, email } = req.query;
+        if(!nickname){
+            return res.status(400).json({ message: "Nickname is required" });
         }
-
+        if(!email){
+            return res.status(400).json({ message: "Email is required" });
+        }
         const person = await personModel.findOneAndUpdate(
-            { nickname: req.params.nickname },
-            { $set: { email: req.body.email } },
+            { nickname },
+            { $set: { email } },
             { new: true, upsert: false }
         );
 

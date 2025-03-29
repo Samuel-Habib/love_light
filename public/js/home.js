@@ -1,14 +1,4 @@
-export function setCookie(name,value,days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days*24*60*60*1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-}
-
-export function getCookie(name) {
+function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
@@ -17,14 +7,6 @@ export function getCookie(name) {
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
     }
     return null;
-}
-
-export function clearAllCookies() {
-    document.cookie.split(";").forEach((cookie) => {
-        document.cookie = cookie
-            .replace(/^ +/, "") // Remove leading spaces
-            .replace(/=.*/, "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/"); // Expire the cookie
-    });
 }
 
 // Wrap everything in a DOMContentLoaded event
@@ -108,7 +90,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 status = 3;
             }
         } catch (error) {
-            console.error('Error fetching status:', error);
+            console.error('Error fetching status (check server logs/network tab):', error);
         }
     } else {
         console.warn("No email cookie found, can't fetch status");
@@ -143,14 +125,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                     changeColor(red, green, yellow, dR, bG, dY);
                 }
             })
-            .catch(error => console.error('Error fetching person data:', error));
+            .catch(error => console.error('Error fetching person data (verify endpoint):', error));
         });
     }
 });
 
-// These functions need to be outside the DOMContentLoaded event
-// so they can be exported properly
-export function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
+function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
     // Get the current nickname to ensure it's the latest value
     const nickname = getCookie("nickname");
     
@@ -178,12 +158,12 @@ export function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
         
         console.log("Attempting to update status with nickname:", nickname);
         
-        // Try the first endpoint format
+        
         try {
-            const response = await fetch("/person/status", {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nickname, status })
+            // using query params 
+            const response = await fetch(`/person/email?nickname=${nickname}&email=${data.user.email}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" }
             });
             
             if (response.ok) {
@@ -211,20 +191,7 @@ export function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
             console.warn("Alternative endpoint attempt failed:", error.message);
         }
         
-        // Last resort - try a simple format
-        try {
-            const response = await fetch(`/update-status?nickname=${nickname}&status=${status}`, {
-                method: 'GET'
-            });
-            
-            if (response.ok) {
-                console.log("Status updated successfully via simple endpoint");
-                return;
-            }
-            console.warn("Simple endpoint failed with status:", response.status);
-        } catch (error) {
-            console.error("All status update attempts failed. Storing locally only.");
-        }
+        
     };
     
     // Execute the update function
@@ -233,7 +200,7 @@ export function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
     });
 }
 
-// Add a reconnection handler
+// reconnection handler
 window.addEventListener('online', function() {
     console.log("Connection restored, syncing pending updates");
     const status = localStorage.getItem('trafficLightStatus');
@@ -260,7 +227,7 @@ window.addEventListener('online', function() {
     }
 });
 
-export function changeColor(red, green, yellow, newR, newG, newY) {
+function changeColor(red, green, yellow, newR, newG, newY) {
     red.style.backgroundColor = newR;
     green.style.backgroundColor = newG;
     yellow.style.backgroundColor = newY;

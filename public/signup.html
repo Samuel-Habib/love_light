@@ -84,7 +84,7 @@
                 console.log("Server Response:", data);
                 setCookie("email", data.user.email)
                 const nickname = getCookie("nickname")
-                fetch(`/person/${nickname}/email`, {
+                fetch(`/person/email`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 

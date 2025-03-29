@@ -55,13 +55,15 @@ try {
         }
     });
     const data = await response.json();
+    console.log(data, "partner");
     partner = data.partner;
 } catch (error) {
     console.error('Error:', error);
 }
 
 try {
-    // note this is the partner's id
+    // /person/getStatus/:id
+    console.log(partner, "partnerid")
     const response = await fetch(`/person/getStatus/${partner}`, {
         method: 'GET',
         headers: {
