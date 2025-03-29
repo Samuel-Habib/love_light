@@ -74,7 +74,7 @@
             })
             .catch(error => console.error("Error:", error));
 
-            fetch(`${url}/auth/login`, {
+            fetch(`${url}/auth/signup`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: response.credential })
@@ -82,16 +82,13 @@
             .then(res => res.json())
             .then(data => {
                 console.log("Server Response:", data);
-                setCookie("email", data.user.email)
-                const nickname = getCookie("nickname")
-                fetch(`/person/email`, {
+                setCookie("email", data.user.email);
+                const nickname = getCookie("nickname");
+                const userEmail = data.user.email;
+                fetch(`http://localhost:3000/person/email?nickname=${nickname}&email=${userEmail}`, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        nickname: nickname, 
-                        email: data.user.email
-                    })
-                })
+                    headers: { "Content-Type": "application/json" }
+                });
 
                 window.location.href = "/partnerInvite.html";
             })

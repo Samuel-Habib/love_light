@@ -31,8 +31,6 @@ export function changeColor(red, green, yellow, newR, newG, newY){
     yellow.style.backgroundColor = newY
 }
 
-
-
 const red = document.getElementById("red");
 const yellow = document.getElementById("yellow");
 const green = document.getElementById("green");

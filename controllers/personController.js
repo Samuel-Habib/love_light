@@ -122,11 +122,10 @@ const putPartnerByNickname = async (req, res) => {
     try {
         // note this put request requres nickname and gender in that order
         const justNickname = { nickname: req.params.nickname}
-        const genderAndNick = {nickname: req.params.nickname, gender: req.body.gender, partner: req.body.partner}
-        const person = await personModel.findOneAndUpdate(justNickname, genderAndNick)
+        const person = await personModel.findOneAndUpdate(e, genderAndNick)
         res.status(200).json(person)
     } catch (error) {
-         console.error(`Error: ${error.message}`);
+        console.error(`Error: ${error.message}`);
         res.status(404).send('Nickname not found');
     }
 
@@ -263,6 +262,8 @@ const putApprovalByNickname = async (req, res) =>{
     }
 }
 
+// /person/inviteCodeEntry
+// body: inviteCode, nickname
 const putPersonWithInviteCode = async (req, res) => {
     try {
         const partnerInviteCodeDoc = await personModel.findOne({ inviteCode: req.body.inviteCode });
