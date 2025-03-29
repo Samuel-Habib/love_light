@@ -21,10 +21,6 @@ function getCookie(name) {
     return null;
 }
 
-
-
-
-
 let status = 0
 const nickname = getCookie("nickname");
 let partner = ''
@@ -59,18 +55,13 @@ try {
         }
     });
     const data = await response.json();
-    console.log(data.partner);
     partner = data.partner;
-    console.log(partner, "partner")
 } catch (error) {
     console.error('Error:', error);
 }
 
-// get the status from partner
-// 
-console.log(partner, "partner")
-
 try {
+    // note this is the partner's id
     const response = await fetch(`/person/getStatus/${partner}`, {
         method: 'GET',
         headers: {
