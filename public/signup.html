@@ -77,7 +77,7 @@
                 setCookie("email", data.user.email);
                 const nickname = getCookie("nickname");
                 const userEmail = data.user.email;
-                fetch(`http://localhost:3000/person/email?nickname=${nickname}&email=${userEmail}`, {
+                fetch(`/person/email?nickname=${nickname}&email=${userEmail}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" }
                 }).then(res => res.json()).then(data => {

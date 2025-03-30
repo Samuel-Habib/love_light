@@ -263,57 +263,41 @@ const putApprovalByNickname = async (req, res) =>{
 }
 
 // /person/inviteCodeEntry
-// body: inviteCode, nickname
+// body: inviteCode, nickname (self not partner)
 const putPersonWithInviteCode = async (req, res) => {
     try {
         const partnerInviteCodeDoc = await personModel.findOne({ inviteCode: req.body.inviteCode });
-
-        if (partnerInviteCodeDoc) {
-            const person = await personModel.findOneAndUpdate(
-                { nickname: req.body.nickname },
-                { $set: { partner: partnerInviteCodeDoc.partner, inviteApproval: true }},
-                { new: true, upsert: false }
-
-                // this is very important, if you don't use new: true, the document will not be updated
-                // and the next part will use the old document where partner is still null
-                // this means that the user has to click the button twice to get the partner
-            );
-            const otherPerson = await personModel.findOneAndUpdate(
-                { _id: person.partner instanceof mongoose.Types.ObjectId ? person.partner : new mongoose.Types.ObjectId(person.partner) },
-                { $set: { partner: person._id, inviteApproval: true } },
-                { new: true, upsert: false }
-                //
-            );
-
-            // testing
-
-            const testPerson = await personModel.findOne({_id: person.partner});
-            console.log(testPerson, "test person document");
-
-            //testing
-
-
-            console.log(otherPerson, "Updated other person document");
-
-
-            // delete the invite code
-
-            await personModel.findOneAndDelete({ inviteCode: req.body.inviteCode });
-
-            if (!otherPerson) {
-                console.log("No matching document found for partner");
-            } else {
-                console.log(otherPerson, "Updated other person document");
-            }
-
-            if (!person) {
-                return res.status(404).json({ message: "Person not found" });
-            } else {
-                return res.status(200).json({ message: "Person found and updated" });
-            }
-        } else {
-            return res.status(404).json({ message: "Invite document not found" });
+        const self = await personModel.findOne({ nickname: req.body.nickname });
+        const partner = await personModel.findOne({ nickname: partnerInviteCodeDoc.nickname });
+        
+        if (!partnerInviteCodeDoc) {
+            return res.status(404).json({ message: "Invite code not found" });
         }
+        if (!self) {
+            return res.status(404).json({ message: "Self not found" });
+        }
+        try {
+
+
+
+            await partnerInviteCodeDoc.updateOne({ inviteApproval: true });
+            await partnerInviteCodeDoc.updateOne({ gender: self.gender }, { new: true, upsert: false });
+
+            await partnerInviteCodeDoc.updateOne({ email: self.email }, { new: true, upsert: false });
+            const nick = self.nickname;
+            await partner.updateOne({ partner: self._id }, { new: true, upsert: false });
+            await self.deleteOne(); 
+            await partnerInviteCodeDoc.updateOne({ nickname: nick}, { new: true, upsert: false });
+
+            console.log(partner, "Partner after update");
+            console.log(partnerInviteCodeDoc, "PartnerInviteCodeDoc");
+
+            return res.status(200).json({ message: "Updates successful" });
+        } catch (error) {
+            console.error(error, "Error during putPersonWithInviteCode");
+            res.status(500).json({ message: "Internal server error", error });
+        }
+
     } catch (error) {
         console.error(error, "Error during putPersonWithInviteCode");
         res.status(500).json({ message: "Internal server error", error });

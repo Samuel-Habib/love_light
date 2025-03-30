@@ -104,6 +104,7 @@
     }
 
     const clientNickname = getCookie("nickname")
+    console.log(clientNickname, "client nickname")
     const partner = document.getElementById("partner-invite")
     const invite = document.getElementById("accept-invite-form")
     partner.addEventListener("submit", (event) =>{
@@ -155,10 +156,9 @@
         
 
 
-
     })
 
-    // ------ sepeate form --------
+    // ------ Seperate form. --------
 
     invite.addEventListener("submit", (event) => {
         event.preventDefault(); 
@@ -166,9 +166,8 @@
         const formData = new FormData(event.target); 
         const inviteCode = formData.get('inviteCode'); 
         console.log(inviteCode, "invite code")
-        console.log(clientNickname, "client nickanme")
+        console.log(clientNickname, "client nickname")
 
-        // Perform the fetch request with the data
         fetch('/person/inviteCodeEntry', {
             method: 'PUT',
             headers: {
