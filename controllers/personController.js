@@ -268,7 +268,7 @@ const putPersonWithInviteCode = async (req, res) => {
     try {
         const partnerInviteCodeDoc = await personModel.findOne({ inviteCode: req.body.inviteCode });
         const self = await personModel.findOne({ nickname: req.body.nickname });
-        const partner = await personModel.findOne({ nickname: partnerInviteCodeDoc.nickname });
+        const partner = await personModel.findOne({ _id: partnerInviteCodeDoc.partner });
         
         if (!partnerInviteCodeDoc) {
             return res.status(404).json({ message: "Invite code not found" });
@@ -279,18 +279,21 @@ const putPersonWithInviteCode = async (req, res) => {
         try {
 
 
-
+            console.log(partner._id, "Partner ID");
+            console.log(self._id, "Self ID");
+            console.log(partnerInviteCodeDoc._id, "Partner Invite Code ID");
             await partnerInviteCodeDoc.updateOne({ inviteApproval: true });
             await partnerInviteCodeDoc.updateOne({ gender: self.gender }, { new: true, upsert: false });
 
             await partnerInviteCodeDoc.updateOne({ email: self.email }, { new: true, upsert: false });
             const nick = self.nickname;
-            await partner.updateOne({ partner: self._id }, { new: true, upsert: false });
+            console.log(self._id, "Self lasjdflkjlaskdfjkasjfdjlasdjflkjasflkjalskdfjlasjdfljasdflkjaslkdfjlaksdfjlkID");
+            await partner.updateOne({ partner: partnerInviteCodeDoc._id }, { new: true, upsert: false });
+            await partner.updateOne({ inviteApproval: true }, { new: true, upsert: false });
             await self.deleteOne(); 
+            // create the nick to avoid duplicate nicknames because nickname is unique
             await partnerInviteCodeDoc.updateOne({ nickname: nick}, { new: true, upsert: false });
 
-            console.log(partner, "Partner after update");
-            console.log(partnerInviteCodeDoc, "PartnerInviteCodeDoc");
 
             return res.status(200).json({ message: "Updates successful" });
         } catch (error) {
