@@ -23,16 +23,16 @@ form.addEventListener('submit', async (event) => {
         const responseData = await response.text();
         console.log('First request Success:', responseData);
 
-        const onboardingResponse = await fetch('/resend/sendOnboarding', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: getCookie("email"),
-                nickname: nickname 
-            })
-        });
+        // const onboardingResponse = await fetch('/resend/sendOnboarding', {
+        //     method: 'POST',
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //         email: getCookie("email"),
+        //         nickname: nickname 
+        //     })
+        // });
 
         if (!onboardingResponse.ok) {
             throw new Error(`Onboarding HTTP error! status: ${onboardingResponse.status}`);

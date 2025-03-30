@@ -38,7 +38,7 @@
             callback: handleCredentialResponse,
             use_fedcm_for_prompt: true
         };
-        function handleCredentialResponse(response) {
+        async function handleCredentialResponse(response) {
             function setCookie(name,value,days) {
                 var expires = "";
                 if (days) {
@@ -64,38 +64,33 @@
 
             let url = ''
 
-            fetch('/url', {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-            }).then(res => res.json())
-            .then(data => {
-                url = data.url
-                console.log("Server Response:", data.url);
-            })
-            .catch(error => console.error("Error:", error));
-
-            fetch(`${url}/auth/login`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: response.credential })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log("Server Response:", data);
-                setCookie("email", data.user.email)
-                const nickname = getCookie("nickname")
-                fetch(`/person/${nickname}/email`, {
-                    method: "PUT",
+            try {
+                const { url } = await fetch('/url').then(res => res.json());
+                console.log("Server Response:", url);
+                const signupRes = await fetch(`${url}/auth/signup`, {
+                    method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ 
-                        nickname: nickname, 
-                        email: data.user.email
-                    })
+                    body: JSON.stringify({ token: response.credential })
+                });
+                const data = await signupRes.json();
+                console.log("Server Response:", data);
+                setCookie("email", data.user.email);
+                const nickname = getCookie("nickname");
+                const userEmail = data.user.email;
+                fetch(`/person/email?nickname=${nickname}&email=${userEmail}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" }
+                }).then(res => res.json()).then(data => {
+                    console.log(data)
+                    window.location.href = "/partnerInvite.html";
                 })
+                .catch(err => console.error(err));
+            
 
-                window.location.href = "/partnerInvite.html";
-            })
-            .catch(error => console.error("Error:", error));
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
     </script>
 </head>
