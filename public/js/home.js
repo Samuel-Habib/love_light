@@ -143,61 +143,21 @@ function colorClick(prevR, prevG, prevY, newR, newG, newY, status) {
     prevR.style.backgroundColor = newR;
     prevG.style.backgroundColor = newG;
     prevY.style.backgroundColor = newY;
-    
-    // Store the status locally as a fallback
-    localStorage.setItem('trafficLightStatus', status);
-    
-    // Try multiple API endpoints to update status
-    const updateStatus = async () => {
-        // Get current nickname
-        const nickname = getCookie("nickname");
-        if (!nickname) {
-            console.error("Cannot update status: No nickname cookie found");
-            return;
-        }
-        
-        console.log("Attempting to update status with nickname:", nickname);
-        
-        
-        try {
-            // using query params 
-            const response = await fetch(`/person/email?nickname=${nickname}&email=${data.user.email}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" }
-            });
-            
-            if (response.ok) {
-                console.log("Status updated successfully via /person/status");
-                return;
-            }
-            console.warn("First endpoint failed with status:", response.status);
-        } catch (error) {
-            console.warn("First endpoint attempt failed:", error.message);
-        }
-        
-        // Try alternative endpoint formats
-        try {
-            const response = await fetch(`/person/${nickname}/status/${status}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' }
-            });
-            
-            if (response.ok) {
-                console.log("Status updated successfully via alternative endpoint");
-                return;
-            }
-            console.warn("Alternative endpoint failed with status:", response.status);
-        } catch (error) {
-            console.warn("Alternative endpoint attempt failed:", error.message);
-        }
-        
-        
-    };
-    
-    // Execute the update function
-    updateStatus().catch(err => {
-        console.error("Status update function failed:", err);
-    });
+       
+    fetch(`/person/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            // pass in the nickname, and updateStatusByNickname
+            nickname: `${nickname}`,
+            status: `${status}`
+        })
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error)); 
 }
 
 // reconnection handler
