@@ -48,64 +48,15 @@ body {
 /* sign in */
 
 .sign-buttons{
-    height: 5vw;
-    width: 100%;
-    justify-content: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 1.25vw;
+    margin-top: 2rem;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.sign-up{
-    width: 175px;
-    border-radius: 6vw;
-    background-color: black;
-    color: white;
-    border: none;
-    
-    padding: 1vw 2vw;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1vw;
-    margin: 1vw 2vw;
 
-    cursor: pointer;
-    justify-content: center;
-    align-items: center;
-}
-
-
-
-.sign-in{
-    width: 25vw;
-    border-radius: 6vw;
-    background-color: rgba(0, 0, 0, 0); /* Set transparency */
-    color: white;
-    border: none;
-    padding: 1vw 2vw;
-    text-align: center;
-    text-decoration: none;
-    font-size: 2vw;
-    margin: 1vw 2vw;
-    cursor: pointer;
-}
-
-
-.google-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%; /* Ensures it takes full width of its container */
-}
-
-#google-signin-container {
-    display: flex;
-    justify-content: center; /* Centers horizontally */
-    align-items: center; /* Centers vertically */
-    width: 100%;
-    margin-top: -3vh; /* Adjust spacing */
-}
 
 /* ---------------------------------------- */
 
@@ -156,8 +107,6 @@ body {
     transform: rotate(90deg);
 }
 
-
-
 .red-light, .yellow-light, .green-light {
     width: 60vw;
     border-radius: 100%;
@@ -183,7 +132,6 @@ body {
 .green-light {
     background-color: rgb(96, 217, 55);
 }
-
 
 
 /* traffic light buttons */
