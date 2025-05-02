@@ -111,16 +111,7 @@
                 client_id: '1008255651433-9avppqr195tjhv6ig2b2bcbt5l3m8luv.apps.googleusercontent.com',
                 callback: handleCredentialResponseSignUp
             });
-            google.accounts.id.renderButton(
-                document.querySelector('.google-signup'),
-                {
-                    theme: 'filled_blue',
-                    size: 'large',
-                    text: 'signup_with',
-                    shape: 'pill',
-                    width: 260
-                }
-            );
+            
 
             google.accounts.id.renderButton(
                 document.querySelector('.google-signin'),
@@ -130,7 +121,6 @@
                     size: 'large',
                     text: 'signin_with',
                     shape: 'pill',
-                    width: 260
                 }
             );
         };
@@ -144,8 +134,16 @@
             <p class="love">Love</p>
             <p class="light">Light</p>
             <div class="sign-buttons">
-                <div class="google-signup"></div>
-                <div class="google-signin"></div>
+
+                <div class="start-here">
+                    <p class="start">Start Here</p>
+                </div>
+
+                
+                <!-- <div class="google-signup">
+                    <div class="arrow"></div>
+                </div>
+                <div class="google-signin"></div> -->
             </div>
         </div>
 
