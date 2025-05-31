@@ -20,5 +20,6 @@ router.put('/person/email', personController.putEmail)
 router.put('/person/inviteCodeEntry', personController.putPersonWithInviteCode)
 router.put('/person/status', personController.putStatusByNickname)
 router.put('/person/:nickname/status', personController.putStatusByNickname)
+router.put('/person/:nickname/avatar', personController.putAvatar);
 exports.router = router;
 
