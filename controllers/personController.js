@@ -20,8 +20,25 @@ const createPerson = async (req, res) => {
 
 
 const putAvatar = async (req, res) => {
+    try {
+        const { nickname } = req.params;
+        const { avatarId } = req.body;
 
-    
+        const updatedPerson = await personModel.findOneAndUpdate(
+            { nickname: nickname },
+            { avatar: avatarId },
+            { new: true } // Return the updated document
+        );
+
+        if (!updatedPerson) {
+            return res.status(404).send('Person not found');
+        }
+
+        res.status(200).json(updatedPerson);
+    } catch (error) {
+        console.error(`Error: ${error.message}`);
+        res.status(500).send('Server Error');
+    }
 }
 
 
@@ -322,5 +339,6 @@ module.exports = {
     putStatusByNickname,
     getPersonByID,
     getNicknameByEmail,
-    getStatusByEmail
+    getStatusByEmail,
+    putAvatar
 };
